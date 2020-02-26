@@ -1,42 +1,59 @@
--- Add tables to drop in this statement (As a comma separated list)
-DROP TABLE IF EXISTS Customer, Pilot, Plane, Technician, Flight, Reservation, Waitlisted, Reserved, Confirmed;
+DROP TABLE IF EXISTS Reserved, Confirmed, Waitlisted, has, Reservation, Customer, Schedule, Flight, repair_request, Pilot, repairs, Technician, Plane;
 
-CREATE TABLE Customer(
-    first_name CHAR(20) NOT NULL,
-    last_name CHAR(20) NOT NULL,
-    gender CHAR(15),
-    date_of_birth DATE NOT NULL,
-    address CHAR(40),
-    contact_num INTEGER,
-    ID CHAR(11),
-    ZIP_CODE INTEGER,
-    PRIMARY KEY(ID)
-);
 
-CREATE TABLE Pilot (
-    name CHAR(40) NOT NULL,
-    ID CHAR(11) NOT NULL,
-    nationality CHAR(20) NOT NULL,
-    PRIMARY KEY(ID)
-);
 
-CREATE TABLE Plane(
+CREATE TABLE Plane (
+    Plane_ID CHAR(11) NOT NULL,
     model CHAR(40) NOT NULL,
-    ID CHAR(11) NOT NULL,
-    make CHAR(40)NOT NULL,
+    make CHAR(40)  NOT NULL,
     age INTEGER,
     num_seats INTEGER,
-    PRIMARY KEY(ID)
+    PRIMARY KEY(Plane_ID)
 );
 
-CREATE TABLE Technician(
-    ID CHAR(11) NOT NULL,
-    PRIMARY KEY(ID)
+
+CREATE TABLE Technician (
+    Tech_ID CHAR(11) NOT NULL,
+    PRIMARY KEY(Tech_ID)
 );
 
--- TO DO: CHECK HOW TO STORE TIME FIELDS IN POSTGRES SQL
+
+CREATE TABLE repairs (
+    Tech_ID CHAR(11) NOT NULL,
+    Plane_ID CHAR(11) NOT NULL,
+    date  DATE,
+    code  CHAR(40),
+    PRIMARY KEY(Tech_ID,Plane_ID),
+    FOREIGN KEY(Tech_ID)          REFERENCES Technician(Tech_ID),
+    FOREIGN KEY(Plane_ID)         REFERENCES Plane(Plane_ID)
+);
+
+
+CREATE TABLE Pilot (
+    Pilot_ID CHAR(11) NOT NULL,
+    name CHAR(40) NOT NULL,
+    nationality CHAR(20),
+    PRIMARY KEY(Pilot_ID)
+);
+
+
+CREATE TABLE repair_request (
+    Pilot_ID CHAR(11) NOT NULL,
+    Tech_ID CHAR(11) NOT NULL,
+    Plane_ID CHAR(11) NOT NULL,
+    repair_request_ID  CHAR(11),     
+    PRIMARY KEY(Pilot_ID, Tech_ID, Plane_ID),
+    FOREIGN KEY(Tech_ID)          REFERENCES Technician(Tech_ID),
+    FOREIGN KEY(Plane_ID)         REFERENCES Plane(Plane_ID),
+    FOREIGN KEY(Pilot_ID)         REFERENCES Pilot(Pilot_ID)
+);
+
+
+
 CREATE TABLE Flight (
     flight_num INTEGER NOT NULL,
+    Plane_ID CHAR(11) NOT NULL,
+    Pilot_ID CHAR(11) NOT NULL,
     cost DECIMAL,
     num_sold INTEGER,
     num_stops INTEGER,
@@ -46,34 +63,77 @@ CREATE TABLE Flight (
     actual_depart_time TIME, 
     source CHAR(40),
     destination CHAR(40),
-    PRIMARY KEY (flight_num)
+    PRIMARY KEY (flight_num),
+    FOREIGN KEY(Pilot_ID)         REFERENCES Pilot(Pilot_ID),
+    FOREIGN KEY(Plane_ID)         REFERENCES Pilot(Plane_ID)
 );
+
+
+CREATE TABLE Schedule (
+    flight_num INTEGER NOT NULL,
+    day CHAR(11),        
+    depart_time TIME,
+    arrive_time TIME,
+    PRIMARY KEY (flight_num),     
+    FOREIGN KEY (flight_num) REFERENCES Flight(flight_num)
+);
+
+
+
+CREATE TABLE Customer (
+    Customer_ID CHAR(11) NOT NULL,
+    first_name CHAR(20)  NOT NULL,
+    last_name CHAR(20),
+    gender CHAR(15),
+    date_of_birth DATE   NOT NULL,
+    address CHAR(40),
+    contact_num INTEGER,
+    ZIP_CODE INTEGER,
+    PRIMARY KEY(Customer_ID)
+);
+
 
 CREATE TABLE Reservation (
     Rnum INTEGER NOT NULL,
     PRIMARY KEY(Rnum)
 );
 
-CREATE TABLE Waitlisted (
-    W_num INTEGER NOT NULL,
-    FOREIGN KEY (Wnum) REFERENCES Reservation(Rnum)
+
+CREATE TABLE has (
+    flight_num INTEGER NOT NULL, 
+    Rnum INTEGER NOT NULL,
+    Customer_ID CHAR(11) NOT NULL,
+    PRIMARY KEY(flight_num, Rnum, Customer_ID),  
+    FOREIGN KEY(flight_num)       REFERENCES Flight(flight_num),
+    FOREIGN KEY(Rnum)             REFERENCES Reservation(Rnum),
+    FOREIGN KEY(Customer_ID)      REFERENCES Customer(Customer_ID)
 );
+
+
+CREATE TABLE Waitlisted (
+    Rnum INTEGER NOT NULL,
+    W_status BOOLEAN,
+    PRIMARY KEY(Rnum),
+    FOREIGN KEY(Rnum)      REFERENCES Reservation(Rnum)
+);
+
 
 CREATE TABLE Confirmed (
-    C_num INTEGER NOT NULL,
-    FOREIGN KEY (Cnum) REFERENCES Reservation(Rnum)
+    Rnum INTEGER NOT NULL,
+    C_status BOOLEAN,
+    PRIMARY KEY(Rnum),
+    FOREIGN KEY(Rnum)      REFERENCES Reservation(Rnum)
 );
+
 
 CREATE TABLE Reserved(
-    Re_num INTEGER NOT NULL,
-    FOREIGN KEY (Re_num) REFERENCES Reservation(Rnum)
+    Rnum INTEGER NOT NULL,
+    Re_status BOOLEAN,
+    PRIMARY KEY(Rnum),
+    FOREIGN KEY(Rnum)      REFERENCES Reservation(Rnum)
 );
 
-CREATE TABLE Schedule (
-    day Date NOT NULL,
-    depart_time TIME,
-    arrive_time TIME,
-    flight_num INTEGER NOT NULL,
-    FOREIGN KEY (flight_num) REFERENCES Flight(flight_num),
-    PRIMARY KEY (flight_num)
-);
+
+
+
+-- TO DO: CHECK HOW TO STORE TIME FIELDS IN POSTGRES 
