@@ -22,7 +22,7 @@ CREATE TABLE repairs (
     Tech_ID CHAR(11) NOT NULL,
     Plane_ID CHAR(11) NOT NULL,
     date  DATE,
-    code  CHAR(40),
+    code  CHAR(40)  NOT NULL,
     PRIMARY KEY(Tech_ID,Plane_ID),
     FOREIGN KEY(Tech_ID)          REFERENCES Technician(Tech_ID),
     FOREIGN KEY(Plane_ID)         REFERENCES Plane(Plane_ID)
@@ -41,7 +41,7 @@ CREATE TABLE repair_request (
     Pilot_ID CHAR(11) NOT NULL,
     Tech_ID CHAR(11) NOT NULL,
     Plane_ID CHAR(11) NOT NULL,
-    repair_request_ID  CHAR(11),     
+    repair_request_ID  CHAR(11) NOT NULL,     
     PRIMARY KEY(Pilot_ID, Tech_ID, Plane_ID),
     FOREIGN KEY(Tech_ID)          REFERENCES Technician(Tech_ID),
     FOREIGN KEY(Plane_ID)         REFERENCES Plane(Plane_ID),
@@ -51,7 +51,7 @@ CREATE TABLE repair_request (
 
 
 CREATE TABLE Flight (
-    flight_num INTEGER NOT NULL,
+    flight_num CHAR(11) NOT NULL,
     Plane_ID CHAR(11) NOT NULL,
     Pilot_ID CHAR(11) NOT NULL,
     cost DECIMAL,
@@ -70,7 +70,7 @@ CREATE TABLE Flight (
 
 
 CREATE TABLE Schedule (
-    flight_num INTEGER NOT NULL,
+    flight_num CHAR(11) NOT NULL,
     day CHAR(11),        
     depart_time TIME,
     arrive_time TIME,
@@ -87,21 +87,21 @@ CREATE TABLE Customer (
     gender CHAR(15),
     date_of_birth DATE   NOT NULL,
     address CHAR(40),
-    contact_num INTEGER,
-    ZIP_CODE INTEGER,
+    contact_num CHAR(11),
+    ZIP_CODE CHAR(5),
     PRIMARY KEY(Customer_ID)
 );
 
 
 CREATE TABLE Reservation (
-    Rnum INTEGER NOT NULL,
+    Rnum CHAR(11) NOT NULL,
     PRIMARY KEY(Rnum)
 );
 
 
 CREATE TABLE has (
-    flight_num INTEGER NOT NULL, 
-    Rnum INTEGER NOT NULL,
+    flight_num CHAR(11) NOT NULL, 
+    Rnum CHAR(11) NOT NULL,
     Customer_ID CHAR(11) NOT NULL,
     PRIMARY KEY(flight_num, Rnum, Customer_ID),  
     FOREIGN KEY(flight_num)       REFERENCES Flight(flight_num),
@@ -111,7 +111,7 @@ CREATE TABLE has (
 
 
 CREATE TABLE Waitlisted (
-    Rnum INTEGER NOT NULL,
+    Rnum CHAR(11) NOT NULL,
     W_status BOOLEAN,
     PRIMARY KEY(Rnum),
     FOREIGN KEY(Rnum)      REFERENCES Reservation(Rnum)
@@ -119,7 +119,7 @@ CREATE TABLE Waitlisted (
 
 
 CREATE TABLE Confirmed (
-    Rnum INTEGER NOT NULL,
+    Rnum CHAR(11) NOT NULL,
     C_status BOOLEAN,
     PRIMARY KEY(Rnum),
     FOREIGN KEY(Rnum)      REFERENCES Reservation(Rnum)
@@ -127,7 +127,7 @@ CREATE TABLE Confirmed (
 
 
 CREATE TABLE Reserved(
-    Rnum INTEGER NOT NULL,
+    Rnum CHAR(11) NOT NULL,
     Re_status BOOLEAN,
     PRIMARY KEY(Rnum),
     FOREIGN KEY(Rnum)      REFERENCES Reservation(Rnum)
