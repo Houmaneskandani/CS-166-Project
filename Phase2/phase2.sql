@@ -65,7 +65,7 @@ CREATE TABLE Flight (
     destination CHAR(40),
     PRIMARY KEY (flight_num),
     FOREIGN KEY(Pilot_ID)         REFERENCES Pilot(Pilot_ID),
-    FOREIGN KEY(Plane_ID)         REFERENCES Pilot(Plane_ID)
+    FOREIGN KEY(Plane_ID)         REFERENCES Plane(Plane_ID)
 );
 
 
@@ -133,7 +133,3 @@ CREATE TABLE Reserved(
     FOREIGN KEY(Rnum)      REFERENCES Reservation(Rnum)
 );
 
-
-
-
--- TO DO: CHECK HOW TO STORE TIME FIELDS IN POSTGRES 
