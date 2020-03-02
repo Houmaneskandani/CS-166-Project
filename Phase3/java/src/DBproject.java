@@ -312,9 +312,9 @@ public class DBproject{
 
 		while (true){
 			// Read year as an integer
-			int y = readIntegerHelper("Year");
+			year = readIntegerHelper("Year");
 			// if year is less 1970 or greater than 2020 then it is invalid so keep looping otherwise convert the year to string and break
-			if (y < 1970 || y > 2020){
+			if (year < 1970 || year > 2020){
 				System.out.println("Invalid input. Year of the plane must be between 1970 and 2020");
 			}
 			else {
@@ -324,9 +324,9 @@ public class DBproject{
 
 		while (true){
 			// Read number of seats as an integer
-			int s = readIntegerHelper("Seats");
+			seats = readIntegerHelper("Seats");
 			// if number of seats is less than 0 or greater than 500 then it is invalid so keep looping otherwise convert the number of seats to a string and break
-			if (s < 0 || s > 500){
+			if (seats < 0 || seats > 500){
 				System.out.println("Invalid input. Number of seats must be between 0 and 500");
 			}
 			else {
@@ -363,8 +363,8 @@ public class DBproject{
 		
 		// Read flight as an integer. If it already exists then keep looping otherwise convert it to string and continue reading flight information
 		while (true){
-			int fn = readIntegerHelper("Flight number");
-			int rowCount = executeSelectQuery(String.format("SELECT * FROM FLIGHT F WHERE F.fnum = %d;", fn), esql);
+			flightNumber = readIntegerHelper("Flight number");
+			int rowCount = executeSelectQuery(String.format("SELECT * FROM FLIGHT F WHERE F.fnum = %d;", flightNumber), esql);
 			// If rowCount is greater than 0 then flight with the inputted flight number already exists
 			if (rowCount > 0){
 				System.out.println("Flight number already exists. Please enter a valid flight number");
@@ -420,7 +420,7 @@ public class DBproject{
 	public static void FindPassengersCountWithStatus(DBproject esql) {//9
 		// Find how many passengers there are with a status (i.e. W,C,R) and list that number.	
 		startingMessage();
-		int flightNumber = "";
+		int flightNumber = 0;
 		String passengerStatus = "";
 		int rowCount = 0;
 
