@@ -299,14 +299,16 @@ public class DBproject{
 		return input;
 	}//end readChoice
 
+	// TO DO: Check if plane id already exists
 	public static void AddPlane(DBproject esql) {//1
 		startingMessage();
 		// Read plane information
-		String planeId = Integer.toString(readIntegerHelper("Plane id"));
+		
+		int planeId = readIntegerHelper("Plane id");
 		String make = readStringHelper("Make");
 		String model = readStringHelper("Model");
-		String year = "";
-		String seats = "";
+		int year = 0;
+		int seats = 0;
 
 		while (true){
 			// Read year as an integer
@@ -316,7 +318,6 @@ public class DBproject{
 				System.out.println("Invalid input. Year of the plane must be between 1970 and 2020");
 			}
 			else {
-				year = Integer.toString(readIntegerHelper("Year")); 
 				break;
 			}
 		}
@@ -329,13 +330,12 @@ public class DBproject{
 				System.out.println("Invalid input. Number of seats must be between 0 and 500");
 			}
 			else {
-				seats = Integer.toString(readIntegerHelper("Seats")); // Neeto check that values is > 0 and < 500
 				break;
 			}
 		}
 
 		try {
-			String query = String.format("INSERT INTO Plane VALUES ('%s', '%s', '%s', '%s', '%s')", planeId, make, model, year, seats);
+			String query = String.format("INSERT INTO Plane VALUES (%d, '%s', '%s', %d, %d)", planeId, make, model, year, seats);
 			System.out.println(query);
 			System.out.println(); 
 			esql.executeUpdate(query);
@@ -350,25 +350,43 @@ public class DBproject{
 	public static void AddPilot(DBproject esql) {//2
 	}
 
-	// To do: Check for date validation
+	// To do: 
+	// 	Check for date validation. format (yyyy-mm-dd)
+	//	Check flight number does not already exist
+	// Check cost is > 0
+	// Check numof stops and num stold >=0
+
 	public static void AddFlight(DBproject esql) {//3
 		// Given a pilot, plane and flight, adds a flight in the DB
 		startingMessage();
-		// Read plane information
-		String flightNumber = Integer.toString(readIntegerHelper("Flight number"));
-		String cost =  Integer.toString(readIntegerHelper("Cost"));
-		String numSold = Integer.toString(readIntegerHelper("Number of tickets sold"));
-		String numStops = Integer.toString(readIntegerHelper("Number of stops")); 
+		int flightNumber = 0;
+		
+		// Read flight as an integer. If it already exists then keep looping otherwise convert it to string and continue reading flight information
+		while (true){
+			int fn = readIntegerHelper("Flight number");
+			int rowCount = executeSelectQuery(String.format("SELECT * FROM FLIGHT F WHERE F.fnum = %d;", fn), esql);
+			// If rowCount is greater than 0 then flight with the inputted flight number already exists
+			if (rowCount > 0){
+				System.out.println("Flight number already exists. Please enter a valid flight number");
+			}
+			else {
+				break;
+			}
+		}
+
+		int cost =  readIntegerHelper("Cost");
+		int numSold = readIntegerHelper("Number of tickets sold");
+		int numStops = readIntegerHelper("Number of stops"); 
 		String departureDate = readStringHelper("Actual departure date"); 
 		String arrivalDate = readStringHelper("Actual arrival date"); 
 		String departureAirport = readStringHelper("Departure airport code");
 		String arrivalAirport = readStringHelper("Arrival airport code");
 		try {
-			String query = String.format("INSERT INTO Plane VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", flightNumber, cost, numSold, numStops, departureDate, arrivalDate, departureAirport, arrivalAirport);
+			String query = String.format("INSERT INTO Plane VALUES (%d, %d, %d, %d, '%s', '%s', '%s', '%s')", flightNumber, cost, numSold, numStops, departureDate, arrivalDate, departureAirport, arrivalAirport);
 			System.out.println(query);
 			System.out.println(); 
 			esql.executeUpdate(query);
-			System.out.println(String.format("Flight (%s) successfully created", flightNumber));
+			System.out.println(String.format("Flight (%d) successfully created", flightNumber));
 			System.out.println(); 
 		 }
 		 catch (Exception e){
@@ -402,16 +420,16 @@ public class DBproject{
 	public static void FindPassengersCountWithStatus(DBproject esql) {//9
 		// Find how many passengers there are with a status (i.e. W,C,R) and list that number.	
 		startingMessage();
-		String flightNumber = "";
+		int flightNumber = "";
 		String passengerStatus = "";
 		int rowCount = 0;
 
 		// Loops until a valid flight number is inputted
 		while (true){
 			// Reads flight number
-			flightNumber = Integer.toString(readIntegerHelper("Flight number"));
+			flightNumber = readIntegerHelper("Flight number");
 			// Check if flight number actually exists
-			rowCount = executeSelectQuery(String.format("SELECT * FROM FLIGHT F WHERE F.fnum = %s", flightNumber), esql);
+			rowCount = executeSelectQuery(String.format("SELECT * FROM FLIGHT F WHERE F.fnum = %d", flightNumber), esql);
 			// If it does not then keep looping otherwise break
 			if (rowCount == 0){
 				System.out.println("Flight number does not exist. Please enter a valid flight number");
@@ -441,7 +459,7 @@ public class DBproject{
 			}			
 		}
 		// Executes query
-		 rowCount = executeSelectQuery(String.format("SELECT COUNT(*) as NumberOfPassengers FROM Customer C, Reservation R WHERE R.cid = C.id and R.status = '%s' and R.fid = '%s'", passengerStatus, flightNumber), esql);
+		 rowCount = executeSelectQuery(String.format("SELECT COUNT(*) as NumberOfPassengers FROM Customer C, Reservation R WHERE R.cid = C.id and R.status = '%s' and R.fid = %d", passengerStatus, flightNumber), esql);
 	}
 
 /*********************************  Helper Functions ******************************** */
