@@ -308,7 +308,7 @@ public class DBproject{
 		String year = Integer.toString(readIntegerHelper("Year")); // Need to check if value is >= 1970 and <= 2020
 		String seats = Integer.toString(readIntegerHelper("Seats")); // Neeto check that values is > 0 and < 500
 		try {
-			String query = String.format("INSERT INTO Plane VALUES (%s, %s, %s, %s, %s)", planeId, make, model, year, seats);
+			String query = String.format("INSERT INTO Plane VALUES ('%s', '%s', '%s', '%s', '%s')", planeId, make, model, year, seats);
 			System.out.println(query);
 			System.out.println(); 
 			esql.executeUpdate(query);
