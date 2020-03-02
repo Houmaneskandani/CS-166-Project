@@ -299,17 +299,28 @@ public class DBproject{
 		return input;
 	}//end readChoice
 
-	// TO DO: Check if plane id already exists
 	public static void AddPlane(DBproject esql) {//1
 		startingMessage();
 		// Read plane information
-		
-		int planeId = readIntegerHelper("Plane id");
+	        
+		// Check for valid Plane id
+		int planeId = 0;
+		while (true){
+			planeId = readIntegerHelper("Plane id");
+			int rowCount = executeSelectQuery(String.format("SELECT * FROM Plane P WHERE P.id = %d", planeId), esql);	
+			if (rowCount != 0){
+				System.out.println("Plane id already exists. Please enter a valid plane id");
+			}
+			else {
+				break;
+			}
+		}
 		String make = readStringHelper("Make");
 		String model = readStringHelper("Model");
 		int year = 0;
 		int seats = 0;
 
+		// Check for valid year
 		while (true){
 			// Read year as an integer
 			year = readIntegerHelper("Year");
@@ -317,16 +328,17 @@ public class DBproject{
 			if (year < 1970 || year > 2020){
 				System.out.println("Invalid input. Year of the plane must be between 1970 and 2020");
 			}
-			else {
+		 	else {
 				break;
 			}
 		}
 
+		// Check for valid number of seats
 		while (true){
 			// Read number of seats as an integer
 			seats = readIntegerHelper("Seats");
 			// if number of seats is less than 0 or greater than 500 then it is invalid so keep looping otherwise convert the number of seats to a string and break
-			if (seats < 0 || seats > 500){
+			if (seats <= 0 || seats >= 500){
 				System.out.println("Invalid input. Number of seats must be between 0 and 500");
 			}
 			else {
@@ -353,8 +365,8 @@ public class DBproject{
 	// To do: 
 	// 	Check for date validation. format (yyyy-mm-dd)
 	//	Check flight number does not already exist
-	// Check cost is > 0
-	// Check numof stops and num stold >=0
+	//      Check cost is > 0
+	//      Check numof stops and num stold >=0
 
 	public static void AddFlight(DBproject esql) {//3
 		// Given a pilot, plane and flight, adds a flight in the DB
@@ -507,9 +519,7 @@ public class DBproject{
 	public static int executeSelectQuery (String query, DBproject esql){
 		int rowCount = 0;
 		try {
-			System.out.println(); 
 			rowCount = esql.executeQuery(query);
-			System.out.println(); 
 		 }
 		 catch (Exception e){
 			System.err.println (e.getMessage());         
