@@ -305,8 +305,35 @@ public class DBproject{
 		String planeId = Integer.toString(readIntegerHelper("Plane id"));
 		String make = readStringHelper("Make");
 		String model = readStringHelper("Model");
-		String year = Integer.toString(readIntegerHelper("Year")); // Need to check if value is >= 1970 and <= 2020
-		String seats = Integer.toString(readIntegerHelper("Seats")); // Neeto check that values is > 0 and < 500
+		String year = "";
+		String seats = "";
+
+		while (true){
+			// Read year as an integer
+			int y = readIntegerHelper("Year");
+			// if year is less 1970 or greater than 2020 then it is invalid so keep looping otherwise convert the year to string and break
+			if (y < 1970 || y > 2020){
+				System.out.println("Invalid input. Year of the plane must be between 1970 and 2020");
+			}
+			else {
+				year = Integer.toString(readIntegerHelper("Year")); 
+				break;
+			}
+		}
+
+		while (true){
+			// Read number of seats as an integer
+			int s = readIntegerHelper("Seats");
+			// if number of seats is less than 0 or greater than 500 then it is invalid so keep looping otherwise convert the number of seats to a string and break
+			if (s < 0 || s > 500){
+				System.out.println("Invalid input. Number of seats must be between 0 and 500");
+			}
+			else {
+				seats = Integer.toString(readIntegerHelper("Seats")); // Neeto check that values is > 0 and < 500
+				break;
+			}
+		}
+
 		try {
 			String query = String.format("INSERT INTO Plane VALUES ('%s', '%s', '%s', '%s', '%s')", planeId, make, model, year, seats);
 			System.out.println(query);
@@ -318,23 +345,41 @@ public class DBproject{
 		 catch (Exception e){
 			System.err.println (e.getMessage());         
 		 }
-		System.out.println(planeId);
-		System.out.println(make);
-		System.out.println(model);
-		System.out.println(year);
-		System.out.println(seats);
 	}
 
 	public static void AddPilot(DBproject esql) {//2
 	}
 
+	// To do: Check for date validation
 	public static void AddFlight(DBproject esql) {//3
 		// Given a pilot, plane and flight, adds a flight in the DB
+		startingMessage();
+		// Read plane information
+		String flightNumber = Integer.toString(readIntegerHelper("Flight number"));
+		String cost =  Integer.toString(readIntegerHelper("Cost"));
+		String numSold = Integer.toString(readIntegerHelper("Number of tickets sold"));
+		String numStops = Integer.toString(readIntegerHelper("Number of stops")); 
+		String departureDate = readStringHelper("Actual departure date"); 
+		String arrivalDate = readStringHelper("Actual arrival date"); 
+		String departureAirport = readStringHelper("Departure airport code");
+		String arrivalAirport = readStringHelper("Arrival airport code");
+		try {
+			String query = String.format("INSERT INTO Plane VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", flightNumber, cost, numSold, numStops, departureDate, arrivalDate, departureAirport, arrivalAirport);
+			System.out.println(query);
+			System.out.println(); 
+			esql.executeUpdate(query);
+			System.out.println(String.format("Flight (%s) successfully created", flightNumber));
+			System.out.println(); 
+		 }
+		 catch (Exception e){
+			System.err.println (e.getMessage());         
+		 }
 	}
 
 	public static void AddTechnician(DBproject esql) {//4
 	}
 
+	// To do: start it
 	public static void BookFlight(DBproject esql) {//5
 		// Given a customer and a flight that he/she wants to book, add a reservation to the DB
 	}
@@ -343,23 +388,69 @@ public class DBproject{
 		// For flight number and date, find the number of availalbe seats (i.e. total plane capacity minus booked seats )
 	}
 
+	// TO DO: handle errors??	
 	public static void ListsTotalNumberOfRepairsPerPlane(DBproject esql) {//7
 		// Count number of repairs per planes and list them in descending order
+		int rowCount = executeSelectQuery("SELECT P*, COUNT(R.rid) as NumOfRepairs FROM Plane P, Repairs R WHERE P.id = R.plane_id GROUP BY P.id ORDER BY NumOfRepairs DESC;", esql);
 	}
 
 	public static void ListTotalNumberOfRepairsPerYear(DBproject esql) {//8
 		// Count repairs per year and list them in ascending order
 	}
 	
+	// TO DO: Check if flight number is valid
 	public static void FindPassengersCountWithStatus(DBproject esql) {//9
-		// Find how many passengers there are with a status (i.e. W,C,R) and list that number.
+		// Find how many passengers there are with a status (i.e. W,C,R) and list that number.	
+		startingMessage();
+		String flightNumber = "";
+		String passengerStatus = "";
+		int rowCount = 0;
+
+		// Loops until a valid flight number is inputted
+		while (true){
+			// Reads flight number
+			flightNumber = Integer.toString(readIntegerHelper("Flight number"));
+			// Check if flight number actually exists
+			rowCount = executeSelectQuery(String.format("SELECT * FROM FLIGHT F WHERE F.fnum = %s", flightNumber), esql);
+			// If it does not then keep looping otherwise break
+			if (rowCount == 0){
+				System.out.println("Flight number does not exist. Please enter a valid flight number");
+			}
+			else {
+				break;
+			}
+		}
+
+		// Loops until a valid passenger status is inputted
+		while (true){
+			try{
+				System.out.println("Select a passenger status");
+				System.out.println("W - Waitlisted");
+				System.out.println("C - Confirmed");
+				System.out.println("R - Reserved");
+				passengerStatus = in.readLine();
+				if (passengerStatus != "W" && passengerStatus != "C" && passengerStatus != "R"){
+					throw new Exception();
+				}
+				else {
+					break;
+				}
+			}catch(Exception e){
+				System.out.println("Your input is invalid! Please select a valid option");
+				continue;
+			}			
+		}
+		// Executes query
+		 rowCount = executeSelectQuery(String.format("SELECT COUNT(*) as NumberOfPassengers FROM Customer C, Reservation R WHERE R.cid = C.id and R.status = '%s' and R.fid = '%s'", passengerStatus, flightNumber), esql);
 	}
 
 /*********************************  Helper Functions ******************************** */
+	
 	public static void startingMessage(){
 		System.out.println("Please enter the following information:");
 	}
-	// Read integer values
+
+	// Read String values and handle exceptions
 	public static int readIntegerHelper(String nameOfField) {
 		int input;
 		// returns only if a correct value is given.
@@ -376,13 +467,13 @@ public class DBproject{
 		return input;
 	}
 
-	// Read String values
+	// Read String values and handle exceptions
 	public static String readStringHelper(String nameOfField) {
 		String input;
 		// returns only if a correct value is given.
 		do {
-			System.out.print("Please enter the " + nameOfField + ": ");
-			try { // read the string, parse it and break.
+			System.out.print(nameOfField + ": ");
+			try { // read the string and break.
 				input = in.readLine();
 				break;
 			}catch (Exception e) {
@@ -391,5 +482,20 @@ public class DBproject{
 			}//end try
 		}while (true);
 		return input;
+	}
+
+	// Executes a Select Query and handles database exceptions
+	// Returns the row count
+	public static int executeSelectQuery (String query, DBproject esql){
+		int rowCount = 0;
+		try {
+			System.out.println(); 
+			rowCount = esql.executeQuery(query);
+			System.out.println(); 
+		 }
+		 catch (Exception e){
+			System.err.println (e.getMessage());         
+		 }	
+		 return rowCount;
 	}
 }
