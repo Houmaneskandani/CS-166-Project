@@ -10,7 +10,7 @@
  *
  */
 
-
+import java.util.Scanner;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -300,6 +300,29 @@ public class DBproject{
 	}//end readChoice
 
 	public static void AddPlane(DBproject esql) {//1
+		startingMessage();
+		// Read plane information
+		String planeId = Integer.toString(readIntegerHelper("Plane id"));
+		String make = readStringHelper("Make");
+		String model = readStringHelper("Model");
+		String year = Integer.toString(readIntegerHelper("Year")); // Need to check if value is >= 1970 and <= 2020
+		String seats = Integer.toString(readIntegerHelper("Seats")); // Neeto check that values is > 0 and < 500
+		try {
+			String query = String.format("INSERT INTO Plane VALUES (%s, %s, %s, %s, %s)", planeId, make, model, year, seats);
+			System.out.println(query);
+			System.out.println(); 
+			esql.executeUpdate(query);
+			System.out.println(String.format("Plane (%s) successfully created", planeId));
+			System.out.println(); 
+		 }
+		 catch (Exception e){
+			System.err.println (e.getMessage());         
+		 }
+		System.out.println(planeId);
+		System.out.println(make);
+		System.out.println(model);
+		System.out.println(year);
+		System.out.println(seats);
 	}
 
 	public static void AddPilot(DBproject esql) {//2
@@ -330,5 +353,43 @@ public class DBproject{
 	
 	public static void FindPassengersCountWithStatus(DBproject esql) {//9
 		// Find how many passengers there are with a status (i.e. W,C,R) and list that number.
+	}
+
+/*********************************  Helper Functions ******************************** */
+	public static void startingMessage(){
+		System.out.println("Please enter the following information:");
+	}
+	// Read integer values
+	public static int readIntegerHelper(String nameOfField) {
+		int input;
+		// returns only if a correct value is given.
+		do {
+			System.out.print(nameOfField + ": ");
+			try { // read the integer, parse it and break.
+				input = Integer.parseInt(in.readLine());
+				break;
+			}catch (Exception e) {
+				System.out.println("Your input is invalid! Please try again");
+				continue;
+			}//end try
+		}while (true);
+		return input;
+	}
+
+	// Read String values
+	public static String readStringHelper(String nameOfField) {
+		String input;
+		// returns only if a correct value is given.
+		do {
+			System.out.print("Please enter the " + nameOfField + ": ");
+			try { // read the string, parse it and break.
+				input = in.readLine();
+				break;
+			}catch (Exception e) {
+				System.out.println("Your input is invalid! Please try again");
+				continue;
+			}//end try
+		}while (true);
+		return input;
 	}
 }
