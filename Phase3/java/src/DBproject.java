@@ -348,7 +348,6 @@ public class DBproject{
 
 		try {
 			String query = String.format("INSERT INTO Plane VALUES (%d, '%s', '%s', %d, %d)", planeId, make, model, year, seats);
-			System.out.println(query);
 			System.out.println(); 
 			esql.executeUpdate(query);
 			System.out.println(String.format("Plane (%s) successfully created", planeId));
@@ -364,8 +363,6 @@ public class DBproject{
 
 	// To do: 
 	// 	Check for date validation. format (yyyy-mm-dd)
-	//	Check flight number does not already exist
-	//      Check cost is > 0
 	//      Check numof stops and num stold >=0
 
 	public static void AddFlight(DBproject esql) {//3
@@ -386,15 +383,66 @@ public class DBproject{
 			}
 		}
 
-		int cost =  readIntegerHelper("Cost");
-		int numSold = readIntegerHelper("Number of tickets sold");
-		int numStops = readIntegerHelper("Number of stops"); 
+		int cost = 0;
+		while (true){
+			cost = readIntegerHelper("Cost");
+			if (cost <= 0){
+				System.out.println("Invalid cost. Please enter a value greater then 0");
+			}
+			else {
+				break;
+			}
+		}	
+		
+		int numSold = 0;
+		while (true){
+			numSold = readIntegerHelper("Number of tickets sold");
+			if (numSold < 0){
+				System.out.println("Invalid number of tickets sold. Please enter a value greater or equal to 0");
+			}
+			else {
+				break;	
+			}
+		}
+
+		int numStops= 0;
+                while (true){
+                        numStops = readIntegerHelper("Number of stops");
+                        if (numStops < 0){
+                                System.out.println("Invalid number of stops. Please enter a value greater or equal to 0");
+                        }
+                        else {
+                                break;
+                        }
+                }
+
 		String departureDate = readStringHelper("Actual departure date"); 
 		String arrivalDate = readStringHelper("Actual arrival date"); 
-		String departureAirport = readStringHelper("Departure airport code");
-		String arrivalAirport = readStringHelper("Arrival airport code");
+		
+		String departureAirport = "";
+		while (true){
+			departureAirport = readStringHelper("Departure airport code");
+			if (departureAirport.length() > 5){
+				System.out.println("Invalid departure airport code. Please enter a code of at most 5 letters/digits");
+			}
+			else {
+				break;
+			}
+		}
+
+		String arrivalAirport = "";
+                while (true){
+                        arrivalAirport = readStringHelper("Arrival airport code");
+                        if (arrivalAirport.length() > 5){
+                                System.out.println("Invalid arrival airport code. Please enter a code of at most 5 letters/digits");
+                        }
+                        else {
+                                break;
+                        }
+                }
+
 		try {
-			String query = String.format("INSERT INTO Plane VALUES (%d, %d, %d, %d, '%s', '%s', '%s', '%s')", flightNumber, cost, numSold, numStops, departureDate, arrivalDate, departureAirport, arrivalAirport);
+			String query = String.format("INSERT INTO Flight VALUES (%d, %d, %d, %d, '%s', '%s', '%s', '%s')", flightNumber, cost, numSold, numStops, departureDate, arrivalDate, arrivalAirport, departureAirport);
 			System.out.println(query);
 			System.out.println(); 
 			esql.executeUpdate(query);
