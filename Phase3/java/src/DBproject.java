@@ -302,8 +302,8 @@ public class DBproject{
 	public static void AddPlane(DBproject esql) {//1
 		startingMessage();
 		// Read plane information
-	        
-		// Check for valid Plane id
+		
+		// Validates Plane Id
 		int planeId = 0;
 		while (true){
 			planeId = readIntegerHelper("Plane id");
@@ -320,7 +320,7 @@ public class DBproject{
 		int year = 0;
 		int seats = 0;
 
-		// Check for valid year
+		// Validate year
 		while (true){
 			// Read year as an integer
 			year = readIntegerHelper("Year");
@@ -333,7 +333,7 @@ public class DBproject{
 			}
 		}
 
-		// Check for valid number of seats
+		// Validate number of seats
 		while (true){
 			// Read number of seats as an integer
 			seats = readIntegerHelper("Seats");
@@ -363,14 +363,12 @@ public class DBproject{
 
 	// To do: 
 	// 	Check for date validation. format (yyyy-mm-dd)
-	//      Check numof stops and num stold >=0
-
 	public static void AddFlight(DBproject esql) {//3
 		// Given a pilot, plane and flight, adds a flight in the DB
 		startingMessage();
 		int flightNumber = 0;
 		
-		// Read flight as an integer. If it already exists then keep looping otherwise convert it to string and continue reading flight information
+		// Validate flight number. If it already exists then keep looping otherwise convert it to string and continue reading flight information
 		while (true){
 			flightNumber = readIntegerHelper("Flight number");
 			int rowCount = executeSelectQuery(String.format("SELECT * FROM FLIGHT F WHERE F.fnum = %d;", flightNumber), esql);
@@ -383,6 +381,7 @@ public class DBproject{
 			}
 		}
 
+		// Validate cost
 		int cost = 0;
 		while (true){
 			cost = readIntegerHelper("Cost");
@@ -394,6 +393,7 @@ public class DBproject{
 			}
 		}	
 		
+		// Validate number of tickets sold
 		int numSold = 0;
 		while (true){
 			numSold = readIntegerHelper("Number of tickets sold");
@@ -405,6 +405,7 @@ public class DBproject{
 			}
 		}
 
+		// Validate number of stops
 		int numStops= 0;
                 while (true){
                         numStops = readIntegerHelper("Number of stops");
@@ -419,6 +420,7 @@ public class DBproject{
 		String departureDate = readStringHelper("Actual departure date"); 
 		String arrivalDate = readStringHelper("Actual arrival date"); 
 		
+		// Validate departure airport code
 		String departureAirport = "";
 		while (true){
 			departureAirport = readStringHelper("Departure airport code");
@@ -430,16 +432,17 @@ public class DBproject{
 			}
 		}
 
+		//Validate arrival airport code
 		String arrivalAirport = "";
-                while (true){
-                        arrivalAirport = readStringHelper("Arrival airport code");
-                        if (arrivalAirport.length() > 5){
-                                System.out.println("Invalid arrival airport code. Please enter a code of at most 5 letters/digits");
-                        }
-                        else {
-                                break;
-                        }
-                }
+		while (true){
+			arrivalAirport = readStringHelper("Arrival airport code");
+			if (arrivalAirport.length() > 5){
+				System.out.println("Invalid arrival airport code. Please enter a code of at most 5 letters/digits");
+			}
+			else {
+				break;
+			}
+		}
 
 		try {
 			String query = String.format("INSERT INTO Flight VALUES (%d, %d, %d, %d, '%s', '%s', '%s', '%s')", flightNumber, cost, numSold, numStops, departureDate, arrivalDate, arrivalAirport, departureAirport);
@@ -458,8 +461,40 @@ public class DBproject{
 	}
 
 	// To do: start it
+	// Book Flight: Given a customer and flight that he/she wants to book, determine the status
+	// of the reservation (Waitlisted/Confirmed/Reserved) and add the reservation to the database
+	// with appropriate status.
 	public static void BookFlight(DBproject esql) {//5
 		// Given a customer and a flight that he/she wants to book, add a reservation to the DB
+		startingMessage();
+
+		int customerId = 0;
+		// Validate customer number.
+		while (true){
+			customerId = readIntegerHelper("Customer ID");
+			int rowCount = executeSelectQuery(String.format("SELECT * FROM CUSTOMER C WHERE C.id = %d;", customerId), esql);
+			// If rowCount is greater than 0 then flight with the inputted flight number already exists
+			if (rowCount == 0){
+				System.out.println("Customer does not exist. Please enter a valid customer ID");
+			}
+			else {
+				break;
+			}
+		}
+
+		int flightNumber = 0;
+		// Validate customer number.
+		while (true){
+			flightNumber = readIntegerHelper("Flight number");
+			int rowCount = executeSelectQuery(String.format("SELECT * FROM FLIGHT F WHERE F.fnum = %d;", flightNumber), esql);
+			// If rowCount is greater than 0 then flight with the inputted flight number already exists
+			if (rowCount == 0){
+				System.out.println("Flight does not exist. Please enter a valid flight number");
+			}
+			else {
+				break;
+			}
+		}
 	}
 
 	public static void ListNumberOfAvailableSeats(DBproject esql) {//6
@@ -484,7 +519,7 @@ public class DBproject{
 		String passengerStatus = "";
 		int rowCount = 0;
 
-		// Loops until a valid flight number is inputted
+		// Validate flight number
 		while (true){
 			// Reads flight number
 			flightNumber = readIntegerHelper("Flight number");
@@ -499,7 +534,7 @@ public class DBproject{
 			}
 		}
 
-		// Loops until a valid passenger status is inputted
+		// Validate passenger status
 		while (true){
 			try{
 				System.out.println("Select a passenger status");
