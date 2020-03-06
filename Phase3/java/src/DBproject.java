@@ -467,14 +467,14 @@ public class DBproject{
 	public static void BookFlight(DBproject esql) {//5
 		// Given a customer and a flight that he/she wants to book, add a reservation to the DB
 		startingMessage();
-
+		
 		int customerId = 0;
-		// Validate customer number.
+		// Validate customer Id.
 		while (true){
 			customerId = readIntegerHelper("Customer ID");
-			int rowCount = executeSelectQuery(String.format("SELECT * FROM CUSTOMER C WHERE C.id = %d;", customerId), esql);
+			int rowCountCustomer = executeSelectQuery(String.format("SELECT * FROM CUSTOMER C WHERE C.id = %d;", customerId), esql);
 			// If rowCount is greater than 0 then flight with the inputted flight number already exists
-			if (rowCount == 0){
+			if (rowCountCustomer == 0){
 				System.out.println("Customer does not exist. Please enter a valid customer ID");
 			}
 			else {
@@ -483,18 +483,58 @@ public class DBproject{
 		}
 
 		int flightNumber = 0;
-		// Validate customer number.
+
+		// Validate flight number.
 		while (true){
 			flightNumber = readIntegerHelper("Flight number");
-			int rowCount = executeSelectQuery(String.format("SELECT * FROM FLIGHT F WHERE F.fnum = %d;", flightNumber), esql);
+			List<List<String>> FlightRecord  = executeSelectQueryGetResults(String.format("SELECT * FROM FLIGHT F WHERE F.fnum = %d;", flightNumber), esql);
 			// If rowCount is greater than 0 then flight with the inputted flight number already exists
-			if (rowCount == 0){
+			if (FlightRecord.isEmpty()){
 				System.out.println("Flight does not exist. Please enter a valid flight number");
 			}
 			else {
 				break;
 			}
 		}
+
+		List<List<String>> ReservationRecord  = executeSelectQueryGetResults(String.format("SELECT * FROM Reservation R WHERE R.cid = %d AND R.fid = %d;", customerId, flightNumber), esql);
+		if (!ReservationRecord.isEmpty()){
+			// If resevation's status is W:
+				// Display: "You are currently waitlised for Flight <inser flight info>."" 
+				// If flight still full:
+					// Display: "Fligh is still full. No actions available"
+					// Break
+
+			for (String S : ReservationRecord.get(0)){
+				System.out.println(S);
+			}
+
+			// Else if Reservation' status is R:
+				// Display: "You have reserved  Flight <inser flight info>."" 
+				// Display: "Woud you like to confirm your fligh? (Y/N)"
+				// If Y 
+					// Update reservation record status to Confirmed and break
+					// Display: "You have confirmed Flight <insert flight info>."
+					// break
+				// Else: 
+					// Display: "You are still reserved for Flight <insert fligh info>"
+					// break
+
+			//  Else
+				// Display: "You have confirmed Flight <insert flight info>.""
+				// Break 
+		}
+		// Else
+			// If Flight is full
+				// Display: "Fligh <insert flight info> is full. Would you like to be added to the waitlist? (Y/N)"
+				// if Y : Waitlist user
+				// else : break
+			// Else
+				// Display "Wold you like to confirm or reserve the flight <insert flight info>? (C/R)"
+				// if C : Create a reservation record with Confirmed status
+				// else : Create a reservation record with Reserved status
+
+
 	}
 
 	public static void ListNumberOfAvailableSeats(DBproject esql) {//6
@@ -609,4 +649,14 @@ public class DBproject{
 		 }	
 		 return rowCount;
 	}
-}
+
+	public static  List<List<String>> executeSelectQueryGetResults(String query, DBproject esql){
+		List<List<String>> records;
+		try {
+			records = esql.executeQueryAndReturnResult(query);
+		 }
+		 catch (Exception e){
+			System.err.println (e.getMessage());         
+		 }	
+		 return records;
+	}
