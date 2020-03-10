@@ -640,8 +640,55 @@ public class DBproject{
 
 	public static void ListNumberOfAvailableSeats(DBproject esql) {//6
 		// For flight number and date, find the number of availalbe seats (i.e. total plane capacity minus booked seats )
+		// check the flight number	  
+                 startingMessage();
+                 int rowCount = 0;
+                 int flightNum = 0;
+                 while(true){
+                        int flightNum = readIntegerHelper("flight number");
+                        int rowCount = executeSelectQuery(String.format("SELECT * FROM Flight F WHERE F.fnum = %d;", flightNum), esql);
+                        if (rowCount = 0){
+                                System.out.println("There is no flight available Please enter a valid flight number");
+                        }
+                        else {
+                                break;
+                        }
+                }
+	
+		// check the depart date
+		String departDate ="";
+		String rowCount =""; 
+                 while(true){
+                        string departDate = readIntegerHelper("depart date");
+                        String rowCount = executeSelectQuery(String.format("SELECT * FROM Flight F WHERE F.actual_departure_date = %d;", departDate), esql);
+                        if (rowCount.length() = 0){
+                                System.out.println(" Please enter a valid departure date");
+                        }
+                        else {
+                                break;
+                        }
+                }
+/*
+                try {
+                        String query = String.format("SELECT P.num_seats From Plane P Where);
+                        System.out.println();
+                        esql.executeUpdate(query);
+                        System.out.println(String.format("Technician id (%d) successfully created", technicianId));
+                        System.out.println();
+                 }
+                 catch (Exception e){
+                        System.err.println (e.getMessage());
+                 }
+
+*/
+
+
+
+
+
+
 	}
-//=====================================
+//====================================
 
 	// TO DO: handle errors??	
 	public static void ListsTotalNumberOfRepairsPerPlane(DBproject esql) {//7
