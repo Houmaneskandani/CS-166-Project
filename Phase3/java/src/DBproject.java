@@ -299,6 +299,8 @@ public class DBproject{
 		return input;
 	}//end readChoice
 
+//====================================
+
 	public static void AddPlane(DBproject esql) {//1
 		startingMessage();
 		// Read plane information
@@ -358,8 +360,60 @@ public class DBproject{
 		 }
 	}
 
+//===================================
+
 	public static void AddPilot(DBproject esql) {//2
-	}
+                 startingMessage();
+	// Validate pilot number. If it already exists then keep looping otherwise convert it to string and continue reading pilot information
+                while(true){
+                        int pilotNumber = readIntegerHelper("Pilot number");
+                        int rowCount = executeSelectQuery(String.format("SELECT * FROM Pilot P WHERE P.id = %d;", pilotNumber), esql); 
+                        if (rowCount > 0){
+                                System.out.println("Pilot number already exists. Please enter a valid Pilot number");
+                        }
+                        else {
+                                break;
+                        }
+                }
+
+         //validate full name of pilot.
+                String fullname = "";
+                while (true){
+                       fullname = readStringHelper("fullname");
+	           //    int rowCount =  executeSelectQuery(String.format("SELECT * FROM Pilot  P WHERE P.fullname = %s;", fullname), esql);       
+                       if (fullname.length() = 0){
+                                System.out.println("Invalid name. Please enter correct fullname");
+                        }
+                        else {
+                                break;
+                        }
+                }
+
+        //validate nationality.
+                int nationality = "";
+                while(true){
+                        nationality = readStringHelper("nationality");
+                        if(nationality.length() = 0){
+                                System.out.println("Invalid nationality. Please enter correct nationality");
+                        }
+                        else {
+                                break;
+                        }
+                }
+
+                try {
+                        String query = String.format("INSERT INTO Pilot VALUES (%d, '%s', '%s')", pilotNumber, fullname, nationality);
+                        System.out.println();
+                        esql.executeUpdate(query);
+                        System.out.println(String.format("Pilot (%d) successfully created", pilotNumber));
+                        System.out.println();
+                 }
+                 catch (Exception e){
+                        System.err.println (e.getMessage());
+                 }
+        }
+
+//===================================
 
 	// To do: 
 	// 	Check for date validation. format (yyyy-mm-dd)
@@ -457,8 +511,20 @@ public class DBproject{
 		 }
 	}
 
+//==================================
+
+
 	public static void AddTechnician(DBproject esql) {//4
+
+
+
+
+
+
 	}
+
+//==================================
+
 
 	// To do: start it
 	// Book Flight: Given a customer and flight that he/she wants to book, determine the status
@@ -537,19 +603,26 @@ public class DBproject{
 
 	}
 
+//=====================================
+
 	public static void ListNumberOfAvailableSeats(DBproject esql) {//6
 		// For flight number and date, find the number of availalbe seats (i.e. total plane capacity minus booked seats )
 	}
+//=====================================
 
 	// TO DO: handle errors??	
 	public static void ListsTotalNumberOfRepairsPerPlane(DBproject esql) {//7
 		// Count number of repairs per planes and list them in descending order
 		int rowCount = executeSelectQuery("SELECT P*, COUNT(R.rid) as NumOfRepairs FROM Plane P, Repairs R WHERE P.id = R.plane_id GROUP BY P.id ORDER BY NumOfRepairs DESC;", esql);
 	}
+//=====================================
 
 	public static void ListTotalNumberOfRepairsPerYear(DBproject esql) {//8
 		// Count repairs per year and list them in ascending order
 	}
+
+
+//=====================================
 	
 	// TO DO: Check if flight number is valid
 	public static void FindPassengersCountWithStatus(DBproject esql) {//9
