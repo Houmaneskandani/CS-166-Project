@@ -651,6 +651,7 @@ public class DBproject{
 	}
 
 	public static  List<List<String>> executeSelectQueryGetResults(String query, DBproject esql){
+		//list< list< string>> records error not initialized Not Fixed! 
 		List<List<String>> records;
 		try {
 			records = esql.executeQueryAndReturnResult(query);
