@@ -364,6 +364,8 @@ public class DBproject{
 
 	public static void AddPilot(DBproject esql) {//2
                  startingMessage();
+		 int rowCount = 0;
+		 int pilotNumber = 0;
 	// Validate pilot number. If it already exists then keep looping otherwise convert it to string and continue reading pilot information
                 while(true){
                         int pilotNumber = readIntegerHelper("Pilot number");
@@ -390,7 +392,7 @@ public class DBproject{
                 }
 
         //validate nationality.
-                int nationality = "";
+                String nationality = "";
                 while(true){
                         nationality = readStringHelper("nationality");
                         if(nationality.length() = 0){
@@ -515,15 +517,46 @@ public class DBproject{
 
 
 	public static void AddTechnician(DBproject esql) {//4
+                 startingMessage();
+		 int rowCount = 0;
+		 int technicianId = 0;
+        // Validate Technician id. If it already exists then keep looping otherwise convert it to string and continue reading Technician information
+                while(true){
+                        int technicianId = readIntegerHelper("Technician id");
+                        int rowCount = executeSelectQuery(String.format("SELECT * FROM Technician T WHERE T.id = %d;", pilotNumber), esql);
+                        if (rowCount > 0){
+                                System.out.println("Technician number already exists. Please enter a valid technician id");
+                        }
+                        else {
+                                break;
+                        }
+               }
 
+        //validate full name of technician
+                String fullname = "";
+                while (true){
+                       fullname = readStringHelper("fullname"); 
+                       if (fullname.length() = 0){
+                                System.out.println("Invalid name. Please enter correct fullname");
+                        }
+                        else {
+                                break;
+                        }
+                }
 
-
-
-
-
+                try {
+                        String query = String.format("INSERT INTO Technician VALUES (%d, '%s')", technicianId, fullname);
+                        System.out.println();
+                        esql.executeUpdate(query);
+                        System.out.println(String.format("Technician id (%d) successfully created", technicianId));
+                        System.out.println();
+                 }
+                 catch (Exception e){
+                        System.err.println (e.getMessage());
+                 }
 	}
 
-//==================================
+//=================================
 
 
 	// To do: start it
