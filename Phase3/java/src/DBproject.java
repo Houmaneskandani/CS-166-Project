@@ -655,11 +655,11 @@ public class DBproject{
                         }
                 }
 	
-		// check the depart date
-		String departDate ="";
-		String rowCount =""; 
-                 while(true){
-                        string departDate = readIntegerHelper("depart date");
+		  // check the depart date
+		  String departDate ="";
+		  String rowCount =""; 
+                   while(true){
+                        string departDate = readStringHelper("depart date");
                         String rowCount = executeSelectQuery(String.format("SELECT * FROM Flight F WHERE F.actual_departure_date = %d;", departDate), esql);
                         if (rowCount.length() = 0){
                                 System.out.println(" Please enter a valid departure date");
@@ -668,25 +668,26 @@ public class DBproject{
                                 break;
                         }
                 }
-/*
+		int totalAvailableSeats = 0;
+		int totalNumBooked = 0;
+		int totalNumSeats = 0;
                 try {
-                        String query = String.format("SELECT P.num_seats From Plane P Where);
+			// total  number of seats 
+                        String query = String.format("SELECT P.seats FROM Plane P, FlightInfo FI, Flight F  WHERE FI.flight_id = F.fnum AND F.fnum = %d AND F.actual_departure_date = %s AND FI.plane_id = P.id;",flightNum, departDate );
                         System.out.println();
-                        esql.executeUpdate(query);
-                        System.out.println(String.format("Technician id (%d) successfully created", technicianId));
+                        totalNumSeats = esql.executeQuery(query);
+			// number of reserved seats/ booked seats
+			String query2 = String.format("SELECT COUNT(*) FROM Reservation R, Flight F  WHERE R.fid = F.fnum AND R.status = R;");
+                        System.out.println();
+                        totalNumBooked = esql.executeQuery(query2);
+			// number of availble seats
+	                totalAvailableSeats = totalNumSeats - totalNumBooked;   
+		        System.out.println(String.format("The flight has (%d) available seats", totalAvailableSeats));
                         System.out.println();
                  }
                  catch (Exception e){
                         System.err.println (e.getMessage());
                  }
-
-*/
-
-
-
-
-
-
 	}
 //====================================
 
