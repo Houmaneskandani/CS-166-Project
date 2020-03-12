@@ -24,6 +24,8 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Random; 
+
 
 /**
  * This class defines a simple embedded SQL utility class that is designed to
@@ -564,12 +566,14 @@ public class DBproject{
 
 		// TO DO: CREATE RANDOM Ids
 		// Creates flight Info
-		query = String.format("INSERT INTO FlightInfo VALUES(%d, %d, %d, %d)",  flightNumber, pilotId, planeId);
+		//int flightInfoId = generateValidId();
+		query = String.format("INSERT INTO FlightInfo VALUES(DEFAULT, %d, %d, %d)",  flightNumber, pilotId, planeId);
 		sucessMessage = "Flight Information sucessfully saved";
 		executeUpdateInsertQuery(query, sucessMessage, esql);
 
+		//int scheduleId = generateValidId()
 		// Creates Schedule
-		query = String.format("INSERT INTO Schedule VALUES(%d, %d, '%s', '%s')",  flightNumber, departureDate, arrivalDate);
+		query = String.format("INSERT INTO Schedule VALUES(DEFAULT, %d, '%s', '%s')",  flightNumber, departureDate, arrivalDate);
 		sucessMessage = "Flight sucessfully scheduled";
 		executeUpdateInsertQuery(query, sucessMessage, esql);
 	}
@@ -1045,4 +1049,10 @@ public class DBproject{
 
 		return Integer.parseInt(numOfSeatsInPlane) <= Integer.parseInt(numOfTicketsSold);
 	}
+	// public static int generateValidId(String targetTable){
+	// 	Random rand = new Random();
+	// 	while(true){
+	// 		int randomId = rand.nextInt(9000) + 3000;
+	// 	}
+	// }
 }
