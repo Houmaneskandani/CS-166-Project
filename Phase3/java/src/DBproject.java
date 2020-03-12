@@ -464,7 +464,7 @@ public class DBproject{
 			rowCount = executeSelectQuery(String.format("SELECT * FROM FLIGHT F WHERE F.fnum = %d;", flightNumber), esql);
 			// If rowCount is greater than 0 then flight with the inputted flight number already exists
 			if (rowCount > 0){
-				System.out.println("Flight number already exists. Please enter a different valid flight number");
+				System.out.println("Flight number already exists. Please enter a valid flight number");
 			}
 			else {
 				break;
@@ -799,13 +799,20 @@ public class DBproject{
 		System.out.println();
 		}
 	}
-//=========================================================================================================================================================================
-	// TO DO: handle errors??	
+
+//=====================================================================================================================================================================
 	public static void ListsTotalNumberOfRepairsPerPlane(DBproject esql) {//7
-		// Count number of repairs per planes and list them in descending order
-		int rowCount = executeSelectQuery("SELECT P*, COUNT(R.rid) as NumOfRepairs FROM Plane P, Repairs R WHERE P.id = R.plane_id GROUP BY P.id ORDER BY NumOfRepairs DESC;", esql);
+		// Count number of repairs per planes and list them in descending order. Excute query and print
+		try {
+			int rowCount = esql.executeQueryAndPrintResult("SELECT P.*, COUNT(R.rid) as NumOfRepairs FROM Plane P, Repairs R WHERE P.id = R.plane_id GROUP BY P.id ORDER BY NumOfRepairs DESC;");		
+		}
+		 catch (Exception e){
+			System.out.println("Something went wrong. Please try again!");
+			System.err.println(e.getMessage());         
+		 }	
 	}
 //=========================================================================================================================================================================
+		// 
 	public static void ListTotalNumberOfRepairsPerYear(DBproject esql) {//8
 		// List total number of repairs per year in ascending order: Return the years with the number of
 		// repairs made in those years in ascending order of number of repairs per year.
@@ -861,8 +868,14 @@ public class DBproject{
 				continue;
 			}			
 		}
-		// Executes query
-		rowCount = executeSelectQuery(String.format("SELECT COUNT(*) as NumberOfPassengers FROM Customer C, Reservation R WHERE R.cid = C.id and R.status = '%s' and R.fid = %d;", passengerStatus, flightNumber), esql);
+		// Executes query and print
+		try {
+			rowCount = esql.executeQueryAndPrintResult(String.format("SELECT COUNT(*) as NumberOfPassengers FROM Customer C, Reservation R WHERE R.cid = C.id and R.status = '%s' and R.fid = %d;", passengerStatus, flightNumber));		
+		}
+		 catch (Exception e){
+			System.out.println("Something went wrong. Please try again!");
+			System.err.println(e.getMessage());         
+		 }	
 	}
 
 /*************************************************************************  Helper Functions ********************************************************************* */
@@ -978,7 +991,7 @@ public class DBproject{
 		}
 
 		while (true){
-			day = readIntegerHelper("Month");
+			day = readIntegerHelper("Day");
 			if (day < 1 || day > 31){
 				System.out.println("Invalid day. Please enter a valid day");
 			}
