@@ -390,7 +390,10 @@ public class DBproject{
         startingMessage();
 		int rowCount = 0;
 		int pilotNumber = 0;
-
+                String sucessMessage = "";
+                String query = "";
+                String fullname = "";
+                String nationality = "";
 		// Validate pilot number. If it already exists then keep looping otherwise break
 		while(true){
 			pilotNumber = readIntegerHelper("Pilot number");
@@ -404,7 +407,6 @@ public class DBproject{
 		}
 
         //validate full name of pilot.
-		String fullname = "";
 		while (true){
 			fullname = readStringHelper("fullname");
 			if (fullname.length() == 0){
@@ -416,7 +418,6 @@ public class DBproject{
 		}
 
         //validate nationality.
-		String nationality = "";
 		while(true){
 			nationality = readStringHelper("nationality");
 			if(nationality.length() == 0){
@@ -427,18 +428,17 @@ public class DBproject{
 			}
 		}
 
-		try {
-			String query = String.format("INSERT INTO Pilot VALUES (%d, '%s', '%s')", pilotNumber, fullname, nationality);
-			System.out.println();
-			esql.executeUpdate(query);
-			System.out.println(String.format("Pilot (%d) successfully created", pilotNumber));
-			System.out.println();
-		}
-		catch (Exception e){
-			System.err.println (e.getMessage());
-		}
-    }
-
+                // create pilot
+                query = String.format("INSERT INTO Pilot VALUES (%d, '%s', '%s')", pilotNumber, fullname, nationality);
+		sucessMessage = "The Pilot successfully created";
+                executeUpdateInsertQuery(query, sucessMessage, esql);
+	
+/*		// update Repairs relation
+		query = String.format("INSERT INTO Repairs(pilot_id) VALUES (%d)", pilotNumber);
+                sucessMessage = "The Repairs entity successfully updated";
+                executeUpdateInsertQuery(query, sucessMessage, esql);
+*/
+	}
 //=========================================================================================================================================================================
 
 	public static void AddFlight(DBproject esql) {//3
@@ -580,20 +580,22 @@ public class DBproject{
         startingMessage();
 		int rowCount = 0;
 		int technicianId = 0;
-        // Validate Technician id. If it already exists then keep looping otherwise convert it to string and continue reading Technician information
-        while(true){
-            technicianId = readIntegerHelper("Technician id");
-            rowCount = executeSelectQuery(String.format("SELECT * FROM Technician T WHERE T.id = %d;", technicianId), esql);
-            if (rowCount > 0){
-                System.out.println("Technician id already exists. Please enter a valid technician id");
-            }
-            else {
-                break;
-            }
-        }
+                String fullname = "";
+		String query ="";
+                String sucessMessage = "";
+	 // Validate Technician id. If it already exists then keep looping otherwise convert it to string and continue reading Technician information
+		while(true){
+			technicianId = readIntegerHelper("Technician id");
+			rowCount = executeSelectQuery(String.format("SELECT * FROM Technician T WHERE T.id = %d;", technicianId), esql);
+	                if (rowCount > 0){
+            	              System.out.println("Technician id already exists. Please enter a valid technician id");
+           		}
+            		else {
+              		 	break;
+           		}
+       		}
 
         //validate full name of technician
-		String fullname = "";
 		while (true){
 			fullname = readStringHelper("fullname"); 
 			if (fullname.length() == 0){
@@ -604,16 +606,16 @@ public class DBproject{
 			}
 		}
 
-		try {
-			String query = String.format("INSERT INTO Technician VALUES (%d, '%s')", technicianId, fullname);
-			System.out.println();
-			esql.executeUpdate(query);
-			System.out.println(String.format("Technician id (%d) successfully created", technicianId));
-			System.out.println();
-		}
-		catch (Exception e){
-			System.err.println (e.getMessage());
-		}
+		//create technician
+		query = String.format("INSERT INTO Technician VALUES (%d, '%s')", technicianId, fullname);
+		sucessMessage = "The technician successfully created";
+                executeUpdateInsertQuery(query, sucessMessage, esql);
+
+/*		// update Repairs entity
+                query = String.format("INSERT INTO Repairs(technician_id) VALUES (%d)", technicianId);
+                sucessMessage = "The Repairs entity successfully updated";
+                executeUpdateInsertQuery(query, sucessMessage, esql);
+*/
 	}
 
 //=========================================================================================================================================================================
@@ -750,6 +752,11 @@ public class DBproject{
 		startingMessage();
 		int rowCount = 0;
 		int flightNum = 0;
+		String query ="";
+		String query2 ="";
+                int totalAvailableSeats = 0;
+                int totalNumBooked = 0;
+                int totalNumSeats = 0;
 		while(true){
 			flightNum = readIntegerHelper("flight number");
 			rowCount = executeSelectQuery(String.format("SELECT * FROM Flight F WHERE F.fnum = %d;", flightNum), esql);
@@ -774,28 +781,25 @@ public class DBproject{
 			}
 		}
 
-		int totalAvailableSeats = 0;
-		int totalNumBooked = 0;
-		int totalNumSeats = 0;
-		try {
-			// total  number of seats 
-			String query = String.format("SELECT P.seats FROM Plane P, FlightInfo FI, Flight F  WHERE FI.flight_id = F.fnum AND F.fnum = %d AND F.actual_departure_date = %s AND FI.plane_id = P.id;",flightNum, departDate );
-			System.out.println();
-			totalNumSeats = esql.executeQuery(query);
-			// number of reserved seats/ booked seats
-			String query2 = String.format("SELECT COUNT(*) FROM Reservation R, Flight F  WHERE R.fid = F.fnum AND R.status = R;");
-			System.out.println();
-			totalNumBooked = esql.executeQuery(query2);
-			// number of availble seats
-			totalAvailableSeats = totalNumSeats - totalNumBooked;   
-			System.out.println(String.format("The flight has (%d) available seats", totalAvailableSeats));
-			System.out.println();
-		}
-		catch (Exception e){
-			System.err.println (e.getMessage());
+		// total  number of seats 
+		query = String.format("SELECT P.seats FROM Plane P, FlightInfo FI, Flight F  WHERE FI.flight_id = F.fnum AND F.fnum = %d AND F.actual_departure_date = %s AND FI.plane_id = P.id;",flightNum, departDate );
+		System.out.println();
+		totalNumSeats = esql.executeQuery(query);
+		// number of reserved seats/ booked seats
+		query2 = String.format("SELECT COUNT(*) FROM Reservation R, Flight F  WHERE R.fid = F.fnum AND R.status = R;");
+		System.out.println();
+		totalNumBooked = esql.executeQuery(query2);
+		// number of availble seats
+		totalAvailableSeats = totalNumSeats - totalNumBooked;
+                if (totalAvailableSeats == 0){
+                        System.out.println(" No seats available");
+                }
+		else{   
+		System.out.println(String.format("The flight has (%d) available seats", totalAvailableSeats));
+		System.out.println();
 		}
 	}
-
+//=========================================================================================================================================================================
 	// TO DO: handle errors??	
 	public static void ListsTotalNumberOfRepairsPerPlane(DBproject esql) {//7
 		// Count number of repairs per planes and list them in descending order
@@ -803,7 +807,14 @@ public class DBproject{
 	}
 //=========================================================================================================================================================================
 	public static void ListTotalNumberOfRepairsPerYear(DBproject esql) {//8
-		// Count repairs per year and list them in ascending order
+		// List total number of repairs per year in ascending order: Return the years with the number of
+		// repairs made in those years in ascending order of number of repairs per year.
+	        List<List<String>> repairsRecord = new ArrayList<List<String>>();	
+		List<List<String>> repairsRecord = executeSelectQueryGetResults(String.format("SELECT DISTINCT repair_date, COUNT(rid) AS NumRepairsPerYear FROM Repairs GROUP BY repair_date ORDER BY COUNT(rid) ASC;", esql));
+		// if no repair made 
+		if ( repairsRecord.isEmpty()){
+			System.out.println(" No records ");	
+		} 			
 	}
 
 
@@ -922,8 +933,7 @@ public class DBproject{
 	}
 
 	public static List<List<String>> executeSelectQueryGetResults(String query, DBproject esql){
-		List<List<String>> records = new ArrayList<List<String>>();	
-		//list< list< string>> records error not initialized Not Fixed! 
+		List<List<String>> records = new ArrayList<List<String>>();
 		try {
 			records = esql.executeQueryAndReturnResult(query);
 		 }
