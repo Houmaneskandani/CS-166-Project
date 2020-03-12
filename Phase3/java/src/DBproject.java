@@ -562,6 +562,7 @@ public class DBproject{
 		sucessMessage = String.format("Flight (%d) successfully created", flightNumber);
 		executeUpdateInsertQuery(query, sucessMessage, esql);
 
+		// TO DO: CREATE RANDOM Ids
 		// Creates flight Info
 		query = String.format("INSERT INTO FlightInfo VALUES(%d, %d, %d, %d)",  flightNumber, pilotId, planeId);
 		sucessMessage = "Flight Information sucessfully saved";
@@ -717,11 +718,11 @@ public class DBproject{
 				while(true){
 					System.out.println("Pleaser enter C/c to confirm the flight reservation or R/r to reserve the flight reservation");
 					answer = scanner.nextLine();
-					if (answer == "C" || answer == "c"){
+					if (answer.equals("C") || answer.equals("c")){
 						confirmed = true;
 						break;
 					} 
-					else if (answer == "R" || answer == "r"){
+					else if (answer.equals("R") || answer.equals("r")){
 						confirmed = false;
 						break;
 					}
@@ -730,6 +731,7 @@ public class DBproject{
 					}
 				}
 				scanner.close();
+				// TO DO: CREATE RANDOM IDs
 				if (confirmed){
 					query = String.format("INSERT INTO Reservation (24657, %d, %d, 'C')", customerId, flightNumber); 
 					sucessMessage = String.format("Customer confirmed for flight %d", flightNumber);
@@ -805,6 +807,7 @@ public class DBproject{
 		}
 	}
 
+	// TO DO: IMPROVE READABILITY?
 //=====================================================================================================================================================================
 	public static void ListsTotalNumberOfRepairsPerPlane(DBproject esql) {//7
 		// Count number of repairs per planes and list them in descending order. Excute query and print
@@ -821,7 +824,7 @@ public class DBproject{
 	public static void ListTotalNumberOfRepairsPerYear(DBproject esql) {//8
 		// List total number of repairs per year in ascending order: Return the years with the number of
 		// repairs made in those years in ascending order of number of repairs per year.
-	        List<List<String>> repairsRecord = new ArrayList<List<String>>();	
+	    List<List<String>> repairsRecord = new ArrayList<List<String>>();	
 		repairsRecord = executeSelectQueryGetResults(String.format("SELECT DISTINCT repair_date, COUNT(rid) AS NumRepairsPerYear FROM Repairs GROUP BY repair_date ORDER BY COUNT(rid) ASC;"), esql);
 		// if no repair made 
 		if ( repairsRecord.isEmpty()){
@@ -831,7 +834,7 @@ public class DBproject{
 
 
 //=========================================================================================================================================================================
-	
+	//TO DO: TEST
 	public static void FindPassengersCountWithStatus(DBproject esql) {//9
 		// Find how many passengers there are with a status (i.e. W,C,R) and list that number.	
 		startingMessage();
@@ -872,15 +875,14 @@ public class DBproject{
 			}catch(Exception e){
 				System.out.println("Your input is invalid! Please select a valid option");
 			}			
-		}
-		// Executes query and print
-		try {
-			rowCount = esql.executeQueryAndPrintResult(String.format("SELECT COUNT(*) as NumberOfPassengers FROM Customer C, Reservation R WHERE R.cid = C.id and R.status = '%s' and R.fid = %d;", passengerStatus, flightNumber));		
-		}
-		 catch (Exception e){
-			System.out.println("Something went wrong. Please try again!");
-			System.err.println(e.getMessage());         
-		 }	
+		} 
+		String query = String.format("SELECT COUNT(*) as NumberOfPassengers FROM Customer C, Reservation R WHERE R.cid = C.id and R.status = '%s' and R.fid = %d;", passengerStatus, flightNumber);
+		String numbeOfPassengers = executeSelectQueryGetResults(query, esql).get(0).get(0);
+		System.out.print("Number of passegers ");
+		if (passengerStatus.equals("W")) System.out.print("waitlisted: ");
+		else if (passengerStatus.equals("C")) System.out.print("confirmed: ");
+		else System.out.print("reserved: ");
+		System.out.println(numbeOfPassengers);
 	}
 
 /*************************************************************************  Helper Functions ********************************************************************* */
@@ -1014,11 +1016,11 @@ public class DBproject{
 		while(true){
 			System.out.println("Pleaser enter Y/y to continue or N/n to stop");
 			answer = scanner.nextLine();
-			if (answer == "Y" || answer == "y"){
+			if (answer.equals("Y") || answer.equals("y")){
 				scanner.close();
 				return true;
 			} 
-			else if (answer == "N" || answer == "n"){
+			else if (answer.equals("N") || answer.equals("n")){
 				scanner.close();
 				return false;
 			}
