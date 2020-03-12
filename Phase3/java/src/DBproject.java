@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * This class defines a simple embedded SQL utility class that is designed to
@@ -299,26 +300,57 @@ public class DBproject{
 		return input;
 	}//end readChoice
 
+//=========================================================================================================================================================================
+
 	public static void AddPlane(DBproject esql) {//1
 		startingMessage();
-		// Read plane information
-		
-		// Validates Plane Id
 		int planeId = 0;
+		String make = "";
+		String model = "";
+		int year = 0;
+		int seats = 0;
+		String query = "";
+		String sucessMessage = "";
+
+		// Validate Plane Id
 		while (true){
 			planeId = readIntegerHelper("Plane id");
 			int rowCount = executeSelectQuery(String.format("SELECT * FROM Plane P WHERE P.id = %d", planeId), esql);	
-			if (rowCount != 0){
+			if (rowCount > 0){
 				System.out.println("Plane id already exists. Please enter a valid plane id");
 			}
 			else {
 				break;
 			}
 		}
-		String make = readStringHelper("Make");
-		String model = readStringHelper("Model");
-		int year = 0;
-		int seats = 0;
+
+		// Validate Make
+		while (true){
+			make = readStringHelper("Make");
+			if (make.length() == 0){
+				System.out.println("Please enter a make for the plane");
+			}
+			else if (make.length() > 32){
+				System.out.println("The make entered is too long. Plase enter a shorter make");
+			}
+			else {
+				break;
+			}
+		}
+
+		// Validate Model
+		while (true){
+			model = readStringHelper("Model");
+			if (make.length() == 0){
+				System.out.println("Please enter a make for the plane.");
+			}
+			else if (make.length() > 32){
+				System.out.println("The make entered is too long. Plase enter a shorter make.");
+			}
+			else {
+				break;
+			}
+		}
 
 		// Validate year
 		while (true){
@@ -326,7 +358,7 @@ public class DBproject{
 			year = readIntegerHelper("Year");
 			// if year is less 1970 or greater than 2020 then it is invalid so keep looping otherwise convert the year to string and break
 			if (year < 1970 || year > 2020){
-				System.out.println("Invalid input. Year of the plane must be between 1970 and 2020");
+				System.out.println("Invalid year. Year of the plane must be between 1970 and 2020. Try Again.");
 			}
 		 	else {
 				break;
@@ -337,7 +369,7 @@ public class DBproject{
 		while (true){
 			// Read number of seats as an integer
 			seats = readIntegerHelper("Seats");
-			// if number of seats is less than 0 or greater than 500 then it is invalid so keep looping otherwise convert the number of seats to a string and break
+			// if number of seats is less than 0 or greater than 500 then it is invalid so keep looping otherwise break
 			if (seats <= 0 || seats >= 500){
 				System.out.println("Invalid input. Number of seats must be between 0 and 500");
 			}
@@ -345,36 +377,94 @@ public class DBproject{
 				break;
 			}
 		}
-
-		try {
-			String query = String.format("INSERT INTO Plane VALUES (%d, '%s', '%s', %d, %d)", planeId, make, model, year, seats);
-			System.out.println(); 
-			esql.executeUpdate(query);
-			System.out.println(String.format("Plane (%s) successfully created", planeId));
-			System.out.println(); 
-		 }
-		 catch (Exception e){
-			System.err.println (e.getMessage());         
-		 }
+		// Create Plane
+		query = String.format("INSERT INTO Plane VALUES (%d, '%s', '%s', %d, %d)", planeId, make, model, year, seats);
+		sucessMessage = String.format("Plane (%d) successfully created", planeId);
+		executeUpdateInsertQuery(query, sucessMessage, esql);
 	}
+
+//=========================================================================================================================================================================
+
 
 	public static void AddPilot(DBproject esql) {//2
-	}
+        startingMessage();
+		int rowCount = 0;
+		int pilotNumber = 0;
 
-	// To do: 
-	// 	Check for date validation. format (yyyy-mm-dd)
+		// Validate pilot number. If it already exists then keep looping otherwise break
+		while(true){
+			pilotNumber = readIntegerHelper("Pilot number");
+			rowCount = executeSelectQuery(String.format("SELECT * FROM Pilot P WHERE P.id = %d;", pilotNumber), esql); 
+			if (rowCount > 0){
+				System.out.println("Pilot number already exists. Please enter a valid Pilot number");
+			}
+			else {
+				break;
+			}
+		}
+
+        //validate full name of pilot.
+		String fullname = "";
+		while (true){
+			fullname = readStringHelper("fullname");
+			if (fullname.length() == 0){
+				System.out.println("Invalid name. Please enter correct fullname");
+			}
+			else {
+				break;
+			}
+		}
+
+        //validate nationality.
+		String nationality = "";
+		while(true){
+			nationality = readStringHelper("nationality");
+			if(nationality.length() == 0){
+				System.out.println("Invalid nationality. Please enter correct nationality");
+			}
+			else {
+				break;
+			}
+		}
+
+		try {
+			String query = String.format("INSERT INTO Pilot VALUES (%d, '%s', '%s')", pilotNumber, fullname, nationality);
+			System.out.println();
+			esql.executeUpdate(query);
+			System.out.println(String.format("Pilot (%d) successfully created", pilotNumber));
+			System.out.println();
+		}
+		catch (Exception e){
+			System.err.println (e.getMessage());
+		}
+    }
+
+//=========================================================================================================================================================================
+
 	public static void AddFlight(DBproject esql) {//3
 		// Given a pilot, plane and flight, adds a flight in the DB
 		startingMessage();
+		String query = "";
+		String sucessMessage = "";
 		int flightNumber = 0;
-		
+		int planeId = 0;
+		int pilotId = 0;
+		int rowCount = 0;
+		int cost = 0;
+		int numSold = 0;
+		int numStops= 0;
+		String departureDate = "";
+		String arrivalDate = "";
+		String departureAirport = "";
+		String arrivalAirport = "";
+
 		// Validate flight number. If it already exists then keep looping otherwise convert it to string and continue reading flight information
 		while (true){
 			flightNumber = readIntegerHelper("Flight number");
-			int rowCount = executeSelectQuery(String.format("SELECT * FROM FLIGHT F WHERE F.fnum = %d;", flightNumber), esql);
+			rowCount = executeSelectQuery(String.format("SELECT * FROM FLIGHT F WHERE F.fnum = %d;", flightNumber), esql);
 			// If rowCount is greater than 0 then flight with the inputted flight number already exists
 			if (rowCount > 0){
-				System.out.println("Flight number already exists. Please enter a valid flight number");
+				System.out.println("Flight number already exists. Please enter a different valid flight number");
 			}
 			else {
 				break;
@@ -382,7 +472,6 @@ public class DBproject{
 		}
 
 		// Validate cost
-		int cost = 0;
 		while (true){
 			cost = readIntegerHelper("Cost");
 			if (cost <= 0){
@@ -394,7 +483,6 @@ public class DBproject{
 		}	
 		
 		// Validate number of tickets sold
-		int numSold = 0;
 		while (true){
 			numSold = readIntegerHelper("Number of tickets sold");
 			if (numSold < 0){
@@ -406,22 +494,22 @@ public class DBproject{
 		}
 
 		// Validate number of stops
-		int numStops= 0;
-                while (true){
-                        numStops = readIntegerHelper("Number of stops");
-                        if (numStops < 0){
-                                System.out.println("Invalid number of stops. Please enter a value greater or equal to 0");
-                        }
-                        else {
-                                break;
-                        }
-                }
+		while (true){
+			numStops = readIntegerHelper("Number of stops");
+			if (numStops < 0){
+				System.out.println("Invalid number of stops. Please enter a value greater or equal to 0");
+			}
+			else {
+				break;
+			}
+		}
 
-		String departureDate = readStringHelper("Actual departure date"); 
-		String arrivalDate = readStringHelper("Actual arrival date"); 
+		departureDate = constructDate("Departure Date");
+		arrivalDate = constructDate("Arrival Date");
 		
+
+		//Note we assume a flight can depart and arrive at the same airport, so we do not validate the case when the airport codes are the same
 		// Validate departure airport code
-		String departureAirport = "";
 		while (true){
 			departureAirport = readStringHelper("Departure airport code");
 			if (departureAirport.length() > 5){
@@ -432,8 +520,7 @@ public class DBproject{
 			}
 		}
 
-		//Validate arrival airport code
-		String arrivalAirport = "";
+		// Validate arrival airport code
 		while (true){
 			arrivalAirport = readStringHelper("Arrival airport code");
 			if (arrivalAirport.length() > 5){
@@ -444,32 +531,109 @@ public class DBproject{
 			}
 		}
 
-		try {
-			String query = String.format("INSERT INTO Flight VALUES (%d, %d, %d, %d, '%s', '%s', '%s', '%s')", flightNumber, cost, numSold, numStops, departureDate, arrivalDate, arrivalAirport, departureAirport);
-			System.out.println(query);
-			System.out.println(); 
-			esql.executeUpdate(query);
-			System.out.println(String.format("Flight (%d) successfully created", flightNumber));
-			System.out.println(); 
-		 }
-		 catch (Exception e){
-			System.err.println (e.getMessage());         
-		 }
+		// Validate Plane Id
+		while (true){
+			planeId = readIntegerHelper("Plane Id");
+			rowCount = executeSelectQuery(String.format("SELECT * FROM Plane P WHERE P.id = %d;", planeId), esql);
+			// If rowCount is 0 then plane does not exist
+			if (rowCount == 0){
+				System.out.println("Plane does not exist. Please enter a valid plane id");
+			}
+			else {
+				break;
+			}
+		}
+
+		// Validate Pilot Id
+		while (true){
+			pilotId = readIntegerHelper("Pilot Id");
+			rowCount = executeSelectQuery(String.format("SELECT * FROM Pilot P WHERE P.id = %d;", pilotId), esql);
+			// If rowCount is 0 then pilot does not exist
+			if (rowCount == 0){
+				System.out.println("Pilot does not exist. Please enter a valid pilot id");
+			}
+			else {
+				break;
+			}
+		}
+
+		// Creates flight
+		query = String.format("INSERT INTO Flight VALUES (%d, %d, %d, %d, '%s', '%s', '%s', '%s')", flightNumber, cost, numSold, numStops, departureDate, arrivalDate, arrivalAirport, departureAirport);
+		sucessMessage = String.format("Flight (%d) successfully created", flightNumber);
+		executeUpdateInsertQuery(query, sucessMessage, esql);
+
+		// Creates flight Info
+		query = String.format("INSERT INTO FlightInfo VALUES(%d, %d, %d, %d)",  flightNumber, pilotId, planeId);
+		sucessMessage = "Flight Information sucessfully saved";
+		executeUpdateInsertQuery(query, sucessMessage, esql);
+
+		// Creates Schedule
+		query = String.format("INSERT INTO Schedule VALUES(%d, %d, '%s', '%s')",  flightNumber, departureDate, arrivalDate);
+		sucessMessage = "Flight sucessfully scheduled";
+		executeUpdateInsertQuery(query, sucessMessage, esql);
 	}
+
+//=========================================================================================================================================================================
+
 
 	public static void AddTechnician(DBproject esql) {//4
+        startingMessage();
+		int rowCount = 0;
+		int technicianId = 0;
+        // Validate Technician id. If it already exists then keep looping otherwise convert it to string and continue reading Technician information
+        while(true){
+            technicianId = readIntegerHelper("Technician id");
+            rowCount = executeSelectQuery(String.format("SELECT * FROM Technician T WHERE T.id = %d;", technicianId), esql);
+            if (rowCount > 0){
+                System.out.println("Technician id already exists. Please enter a valid technician id");
+            }
+            else {
+                break;
+            }
+        }
+
+        //validate full name of technician
+		String fullname = "";
+		while (true){
+			fullname = readStringHelper("fullname"); 
+			if (fullname.length() == 0){
+				System.out.println("Invalid name. Please enter correct fullname");
+			}
+			else {
+				break;
+			}
+		}
+
+		try {
+			String query = String.format("INSERT INTO Technician VALUES (%d, '%s')", technicianId, fullname);
+			System.out.println();
+			esql.executeUpdate(query);
+			System.out.println(String.format("Technician id (%d) successfully created", technicianId));
+			System.out.println();
+		}
+		catch (Exception e){
+			System.err.println (e.getMessage());
+		}
 	}
 
-	// To do: start it
+//=========================================================================================================================================================================
+
 	// Book Flight: Given a customer and flight that he/she wants to book, determine the status
 	// of the reservation (Waitlisted/Confirmed/Reserved) and add the reservation to the database
 	// with appropriate status.
 	public static void BookFlight(DBproject esql) {//5
 		// Given a customer and a flight that he/she wants to book, add a reservation to the DB
 		startingMessage();
-		
 		int customerId = 0;
-		// Validate customer Id.
+		int flightNumber = 0;
+		List<List<String>> FlightRecord = new ArrayList<List<String>>();
+		boolean procceed = false;
+		String reservationNum = "";
+		//String flightNum = "";
+		String query = "";
+		String sucessMessage = "";
+
+		// Validate customer Id
 		while (true){
 			customerId = readIntegerHelper("Customer ID");
 			int rowCountCustomer = executeSelectQuery(String.format("SELECT * FROM CUSTOMER C WHERE C.id = %d;", customerId), esql);
@@ -482,12 +646,10 @@ public class DBproject{
 			}
 		}
 
-		int flightNumber = 0;
-
-		// Validate flight number.
+		// Validate flight number
 		while (true){
 			flightNumber = readIntegerHelper("Flight number");
-			List<List<String>> FlightRecord  = executeSelectQueryGetResults(String.format("SELECT * FROM FLIGHT F WHERE F.fnum = %d;", flightNumber), esql);
+			FlightRecord  = executeSelectQueryGetResults(String.format("SELECT * FROM FLIGHT F WHERE F.fnum = %d;", flightNumber), esql);
 			// If rowCount is greater than 0 then flight with the inputted flight number already exists
 			if (FlightRecord.isEmpty()){
 				System.out.println("Flight does not exist. Please enter a valid flight number");
@@ -497,61 +659,156 @@ public class DBproject{
 			}
 		}
 
-		List<List<String>> ReservationRecord  = executeSelectQueryGetResults(String.format("SELECT * FROM Reservation R WHERE R.cid = %d AND R.fid = %d;", customerId, flightNumber), esql);
+		List<List<String>> ReservationRecord = executeSelectQueryGetResults(String.format("SELECT * FROM Reservation R WHERE R.cid = %d AND R.fid = %d;", customerId, flightNumber), esql);
+
+		// If a reservation exists
 		if (!ReservationRecord.isEmpty()){
-			// If resevation's status is W:
-				// Display: "You are currently waitlised for Flight <inser flight info>."" 
-				// If flight still full:
-					// Display: "Fligh is still full. No actions available"
-					// Break
+			reservationNum = ReservationRecord.get(0).get(0);
+			//flightNum = FlightRecord.get(0).get(0);
 
-			for (String S : ReservationRecord.get(0)){
-				System.out.println(S);
+			// If resevation status is W:
+			if (ReservationRecord.get(0).get(3) == "W"){
+				System.out.println("Customer is currently waitlised for Flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
+			}// If resereation status is R
+			else if (ReservationRecord.get(0).get(3) == "R"){
+
+				System.out.println("Customer is reserved for Flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
+				System.out.println("Woud you like to change customer's reservation status to Confirmed? (Y/N)");
+				procceed = getYesNoAnswer();
+
+				// Update reservation status to confirm
+				if (procceed){
+					query = String.format("UPDATE Reservation R SET R.status = 'C' WHERE R.rnum = %s", reservationNum);
+					sucessMessage = String.format("Successfully confirmed resevation (%s) for flight %d ", reservationNum, flightNumber);
+					executeUpdateInsertQuery(query, sucessMessage, esql);
+				}
+				else {
+					// User still reserved
+					System.out.println("Customer is still reserved for Flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
+				}
+			} // If reservation status is C
+			else {
+				// Display confirmation
+				System.out.println("Customer is confirmed for Flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
 			}
+		} // If there is no reservation
+		else{
+			// If flight is full
+			if (isFlightFull(flightNumber, esql)){
+				System.out.println("Flight is currently full. Would you like to add the customer to the waitlist? (Y/N)");
+				procceed = getYesNoAnswer();
+				if (procceed){
+					// Crates a reservation with W status
+					query = String.format("INSERT INTO Reservation (7585678, %d, %d, 'W')", customerId, flightNumber); 
+					sucessMessage = String.format("Sucessfully waitlisted customer for Flight - %d", flightNumber);
+					executeUpdateInsertQuery(query, sucessMessage, esql);
+				}
+			}
+			else {
+				// TO DO CREATE RESEVATION NUMBERS
+				System.out.println("Flight has open seats. Wold you like to confirm or reseve the flight for the customer?");
+				// Check if user wants to confirm or reseve a flight
+				String answer = "";
+				Scanner scanner = new Scanner(System.in);
+				boolean confirmed = false;
 
-			// Else if Reservation' status is R:
-				// Display: "You have reserved  Flight <inser flight info>."" 
-				// Display: "Woud you like to confirm your fligh? (Y/N)"
-				// If Y 
-					// Update reservation record status to Confirmed and break
-					// Display: "You have confirmed Flight <insert flight info>."
-					// break
-				// Else: 
-					// Display: "You are still reserved for Flight <insert fligh info>"
-					// break
-
-			//  Else
-				// Display: "You have confirmed Flight <insert flight info>.""
-				// Break 
+				while(true){
+					System.out.println("Pleaser enter C/c to confirm the flight reservation or R/r to reserve the flight reservation");
+					answer = scanner.nextLine();
+					if (answer == "C" || answer == "c"){
+						confirmed = true;
+						break;
+					} 
+					else if (answer == "R" || answer == "r"){
+						confirmed = false;
+						break;
+					}
+					else {
+						System.out.print("Invalid choice. ");
+					}
+				}
+				scanner.close();
+				if (confirmed){
+					query = String.format("INSERT INTO Reservation (24657, %d, %d, 'C')", customerId, flightNumber); 
+					sucessMessage = String.format("Customer confirmed for flight %d", flightNumber);
+					executeUpdateInsertQuery(query, sucessMessage, esql);					
+				}
+				else {
+					query = String.format("INSERT INTO Reservation (32444, %d, %d, 'R')", customerId, flightNumber); 
+					sucessMessage = String.format("Customer reserved for flight: %s", flightNumber);
+					executeUpdateInsertQuery(query, sucessMessage, esql);	
+				}
+			}
 		}
-		// Else
-			// If Flight is full
-				// Display: "Fligh <insert flight info> is full. Would you like to be added to the waitlist? (Y/N)"
-				// if Y : Waitlist user
-				// else : break
-			// Else
-				// Display "Wold you like to confirm or reserve the flight <insert flight info>? (C/R)"
-				// if C : Create a reservation record with Confirmed status
-				// else : Create a reservation record with Reserved status
-
-
 	}
+
+//=========================================================================================================================================================================
 
 	public static void ListNumberOfAvailableSeats(DBproject esql) {//6
 		// For flight number and date, find the number of availalbe seats (i.e. total plane capacity minus booked seats )
+		// check the flight number	  
+		startingMessage();
+		int rowCount = 0;
+		int flightNum = 0;
+		while(true){
+			flightNum = readIntegerHelper("flight number");
+			rowCount = executeSelectQuery(String.format("SELECT * FROM Flight F WHERE F.fnum = %d;", flightNum), esql);
+			if (rowCount == 0){
+				System.out.println("There is no flight available. Please enter a valid flight number");
+			}
+			else {
+				break;
+			}
+	    }
+	
+		  // check the depart date
+		String departDate ="";
+		while(true){
+			departDate = readStringHelper("Depart date");
+			rowCount = executeSelectQuery(String.format("SELECT * FROM Flight F WHERE F.actual_departure_date = %d;", departDate), esql);
+			if (rowCount == 0){
+				System.out.println("Please enter a valid departure date");
+			}
+			else {
+				break;
+			}
+		}
+
+		int totalAvailableSeats = 0;
+		int totalNumBooked = 0;
+		int totalNumSeats = 0;
+		try {
+			// total  number of seats 
+			String query = String.format("SELECT P.seats FROM Plane P, FlightInfo FI, Flight F  WHERE FI.flight_id = F.fnum AND F.fnum = %d AND F.actual_departure_date = %s AND FI.plane_id = P.id;",flightNum, departDate );
+			System.out.println();
+			totalNumSeats = esql.executeQuery(query);
+			// number of reserved seats/ booked seats
+			String query2 = String.format("SELECT COUNT(*) FROM Reservation R, Flight F  WHERE R.fid = F.fnum AND R.status = R;");
+			System.out.println();
+			totalNumBooked = esql.executeQuery(query2);
+			// number of availble seats
+			totalAvailableSeats = totalNumSeats - totalNumBooked;   
+			System.out.println(String.format("The flight has (%d) available seats", totalAvailableSeats));
+			System.out.println();
+		}
+		catch (Exception e){
+			System.err.println (e.getMessage());
+		}
 	}
 
 	// TO DO: handle errors??	
 	public static void ListsTotalNumberOfRepairsPerPlane(DBproject esql) {//7
 		// Count number of repairs per planes and list them in descending order
-		int rowCount = executeSelectQuery("SELECT P*, COUNT(R.rid) as NumOfRepairs FROM Plane P, Repairs R WHERE P.id = R.plane_id GROUP BY P.id ORDER BY NumOfRepairs DESC;", esql);
+		int rowCount = executeSelectQuery("SELECT P.*, COUNT(R.rid) as NumOfRepairs FROM Plane P, Repairs R WHERE P.id = R.plane_id GROUP BY P.id ORDER BY NumOfRepairs DESC;", esql);
 	}
-
+//=========================================================================================================================================================================
 	public static void ListTotalNumberOfRepairsPerYear(DBproject esql) {//8
 		// Count repairs per year and list them in ascending order
 	}
+
+
+//=========================================================================================================================================================================
 	
-	// TO DO: Check if flight number is valid
 	public static void FindPassengersCountWithStatus(DBproject esql) {//9
 		// Find how many passengers there are with a status (i.e. W,C,R) and list that number.	
 		startingMessage();
@@ -564,7 +821,7 @@ public class DBproject{
 			// Reads flight number
 			flightNumber = readIntegerHelper("Flight number");
 			// Check if flight number actually exists
-			rowCount = executeSelectQuery(String.format("SELECT * FROM FLIGHT F WHERE F.fnum = %d", flightNumber), esql);
+			rowCount = executeSelectQuery(String.format("SELECT * FROM FLIGHT F WHERE F.fnum = %d;", flightNumber), esql);
 			// If it does not then keep looping otherwise break
 			if (rowCount == 0){
 				System.out.println("Flight number does not exist. Please enter a valid flight number");
@@ -582,7 +839,8 @@ public class DBproject{
 				System.out.println("C - Confirmed");
 				System.out.println("R - Reserved");
 				passengerStatus = in.readLine();
-				if (passengerStatus != "W" && passengerStatus != "C" && passengerStatus != "R"){
+				if (!passengerStatus.equals("W") && !passengerStatus.equals("C") && !passengerStatus.equals("R")){
+					System.out.println(passengerStatus);
 					throw new Exception();
 				}
 				else {
@@ -590,14 +848,13 @@ public class DBproject{
 				}
 			}catch(Exception e){
 				System.out.println("Your input is invalid! Please select a valid option");
-				continue;
 			}			
 		}
 		// Executes query
-		 rowCount = executeSelectQuery(String.format("SELECT COUNT(*) as NumberOfPassengers FROM Customer C, Reservation R WHERE R.cid = C.id and R.status = '%s' and R.fid = %d", passengerStatus, flightNumber), esql);
+		rowCount = executeSelectQuery(String.format("SELECT COUNT(*) as NumberOfPassengers FROM Customer C, Reservation R WHERE R.cid = C.id and R.status = '%s' and R.fid = %d;", passengerStatus, flightNumber), esql);
 	}
 
-/*********************************  Helper Functions ******************************** */
+/*************************************************************************  Helper Functions ********************************************************************* */
 	
 	public static void startingMessage(){
 		System.out.println("Please enter the following information:");
@@ -618,7 +875,7 @@ public class DBproject{
 			}//end try
 		}while (true);
 		return input;
-	}
+	} 
 
 	// Read String values and handle exceptions
 	public static String readStringHelper(String nameOfField) {
@@ -650,14 +907,111 @@ public class DBproject{
 		 return rowCount;
 	}
 
-	public static  List<List<String>> executeSelectQueryGetResults(String query, DBproject esql){
-		List<List<String>> records = new ArrayList<List<String>>(); 
+	public static void executeUpdateInsertQuery(String query, String sucessMessage, DBproject esql){
+		try {
+			System.out.println(query);
+			System.out.println(); 
+			esql.executeUpdate(query);
+			System.out.println(sucessMessage);
+			System.out.println(); 
+		}
+		catch (Exception e){
+			System.out.println("Something went wrong, please try again!");
+			System.err.println(e.getMessage());         
+		}
+	}
+
+	public static List<List<String>> executeSelectQueryGetResults(String query, DBproject esql){
+		List<List<String>> records = new ArrayList<List<String>>();	
 		try {
 			records = esql.executeQueryAndReturnResult(query);
 		 }
 		 catch (Exception e){
-			System.err.println (e.getMessage());         
+			System.out.println("Something went wrong. Please try again!");
+			System.err.println(e.getMessage());         
 		 }	
 		 return records;
+	}
+
+	public static String DisplayFlightInfo(List<String> FlightRecord){
+		return "Number: " + FlightRecord.get(0) + "\nCost: $ " + FlightRecord.get(1) + "\nDeparting on: " + FlightRecord.get(4) + "\n";
+	}
+
+	// Asks user for year, month, and date information and constructs a date string in the format yyyy-mm-dd
+	public static String constructDate (String DateType){
+		int year = 0;
+		int month = 0;
+		int day = 0;
+		System.out.println("Enter the following information for the " + DateType + ":");
+		// Get current year
+		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+		
+		while (true){
+			year = readIntegerHelper("Year");
+			if (year < currentYear || year > currentYear + 2){
+				System.out.println("Invalid year. Please enter a valid year");
+			}
+			else {
+				break;
+			}
+		}
+
+		while (true){
+			month = readIntegerHelper("Month");
+			if (month < 1 || month > 12){
+				System.out.println("Invalid month. Please enter a valid month");
+			}
+			else{
+				break;
+			}
+		}
+
+		while (true){
+			day = readIntegerHelper("Month");
+			if (day < 1 || day > 31){
+				System.out.println("Invalid day. Please enter a valid day");
+			}
+			else{
+				break;
+			}
+		}
+
+		return Integer.toString(year) + "-" + Integer.toString(month) + "-" + Integer.toString(day); 
+	}
+
+	public static boolean getYesNoAnswer(){
+		String answer = "";
+		Scanner scanner = new Scanner(System.in);
+		while(true){
+			System.out.println("Pleaser enter Y/y to continue or N/n to stop");
+			answer = scanner.nextLine();
+			if (answer == "Y" || answer == "y"){
+				scanner.close();
+				return true;
+			} 
+			else if (answer == "N" || answer == "n"){
+				scanner.close();
+				return false;
+			}
+			else {
+				System.out.print("Invalid choice. ");
+			}
+		}
+	}
+
+	public static boolean isFlightFull(int flightNumber, DBproject esql){
+		String query = "";
+		String numOfTicketsSold = "";
+		String numOfSeatsInPlane = "";
+
+		// Get the number of tickets sold
+		query = String.format("Select F.num_sold FROM Flight F WHERE F.fnum = %d;", flightNumber);
+		numOfTicketsSold = executeSelectQueryGetResults(query, esql).get(0).get(0);
+
+		// Get the number of seats in the plane
+		query = String.format("SELECT P.seats FROM Plane P WHERE P.Id = (SELECT FI.plane_id FROM FlightInfo FI WHERE FI.flight_id = %d);", flightNumber);
+		numOfSeatsInPlane = executeSelectQueryGetResults(query, esql).get(0).get(0);
+
+		return Integer.parseInt(numOfSeatsInPlane) <= Integer.parseInt(numOfTicketsSold);
 	}
 }
