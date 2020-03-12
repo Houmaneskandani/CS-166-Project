@@ -651,7 +651,7 @@ public class DBproject{
 	}
 
 	public static  List<List<String>> executeSelectQueryGetResults(String query, DBproject esql){
-		List<List<String>> records;
+		List<List<String>> records = new ArrayList<List<String>>(); 
 		try {
 			records = esql.executeQueryAndReturnResult(query);
 		 }
@@ -660,3 +660,4 @@ public class DBproject{
 		 }	
 		 return records;
 	}
+}
