@@ -793,8 +793,8 @@ public class DBproject{
 		String query ="";
 		String query2 ="";
                 String departDate ="";
-                int totalAvailableSeats = 0;
-                int totalNumBooked = 0;
+              //  int totalAvailableSeats = 0;
+         //       int totalNumBooked = 0;
              //   int totalNumSeats = 0;
 		while(true){
 			flightNum = readIntegerHelper("flight number");
@@ -807,10 +807,10 @@ public class DBproject{
 			}
 	    
 		}	
-/*			// check the depart date and time
+			// check the depart date and time
 			departDate = constructDateInput("Departure Date and time");
 			System.out.println(String.format("%s", departDate));
-			// check if there is departure date and time exist
+/*			// check if there is departure date and time exist
                 	rowCount2 = executeSelectQuery(String.format("SELECT * FROM Flight F WHERE F.actual_departure_date = '%s';", departDate), esql);
                        
 			if (rowCount2 == 0){
@@ -871,10 +871,16 @@ System.out.println(String.format("%d", ArowCount));
 */
                         query = String.format("SELECT P.seats FROM Plane P, FlightInfo FI, Flight F  WHERE FI.flight_id = F.fnum AND F.fnum = %d AND F.actual_departure_date ='%s' AND FI.plane_id = P.id;",flightNum, departDate);
                         String totalNumSeats = executeSelectQueryGetResults(query, esql).get(0).get(0);
-			System.out.println(String.format("\nNumber of seats %s ",totalNumSeats));	
-
-
-
+			System.out.println(totalNumSeats + String.format(" is the total seats in flight number %d ", flightNum));
+                        // number of reserved seats/ booked seats
+                        query2 = String.format("SELECT COUNT(*) FROM Reservation R, Flight F  WHERE R.fid = F.fnum AND R.status = 'R' AND F.actual_departure_date = '%s';", departDate);
+			String totalNumBooked = executeSelectQueryGetResults(query2, esql).get(0).get(0);
+			System.out.println(totalNumBooked + String.format(" is the total seats which booked in flight number %d ", flightNum));
+                        // number of availble seats
+                        int totalNumSeatsInt = Integer.parseInt(totalNumSeats);
+			int totalNumBookedInt = Integer.parseInt(totalNumBooked);
+			int totalAvailableSeats = totalNumSeatsInt - totalNumBookedInt;
+			System.out.println(totalAvailableSeats + String.format(" is the total availble seats in flight number %d ", flightNum));
 	}
 
 //=====================================================================================================================================================================
