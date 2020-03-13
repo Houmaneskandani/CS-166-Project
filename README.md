@@ -107,7 +107,12 @@ record as a percentage)
 
 # Phase 2: Relational Schema Design
 
-<img src="Phase2/image3.png " width ="900" >
+**Task**
+
+Translate the provided ER design to a PostgreSQL relational database schema.
+
+
+<img src="Phase2/image3.png " width ="600" >
 
 
 #### Assumptions:
