@@ -10,7 +10,6 @@
  *
  */
 
-import java.util.Scanner;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -705,8 +704,8 @@ public class DBproject{
 				procceed = getYesNoAnswer();
 				if (procceed){
 					// Crates a reservation with W status
-					query = String.format("INSERT INTO Reservation (%d, %d, %d, 'W')", generateValidId(), customerId, flightNumber); 
-					sucessMessage = String.format("Successfully WAITLISTED customer for flight (%d)", flightNumber);
+					query = String.format("INSERT INTO Reservation VALUES (%d, %d, %d, 'W')", generateValidId(), customerId, flightNumber); 
+					sucessMessage = String.format("Sucessfully WAITLISTED customer for flight (%d)", flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);
 				}
 				else {
@@ -735,13 +734,13 @@ public class DBproject{
 					}
 				}
 				if (confirmed){
-					query = String.format("INSERT INTO Reservation (%d, %d, %d, 'C')", generateValidId() ,customerId, flightNumber); 
-					sucessMessage = String.format("Successfully CONFIRMED customer for flight (%d);", flightNumber);
+					query = String.format("INSERT INTO Reservation VALUES (%d, %d, %d, 'C')", generateValidId() ,customerId, flightNumber); 
+					sucessMessage = String.format("Sucessfully CONFIRMED customer for flight (%d)", flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);					
 				}
 				else {
-					query = String.format("INSERT INTO Reservation (%d, %d, %d, 'R')",  generateValidId(), customerId, flightNumber); 
-					sucessMessage = String.format("Successfully RESERVED customer for flight (%d);", flightNumber);
+					query = String.format("INSERT INTO Reservation VALUES (%d, %d, %d, 'R')",  generateValidId(), customerId, flightNumber); 
+					sucessMessage = String.format("Sucessfully RESERVED customer for flight (%d)", flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);	
 				}
 			}
