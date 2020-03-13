@@ -107,6 +107,9 @@ record as a percentage)
 
 # Phase 2: Relational Schema Design
 
+<img src="Phase2/image3.png " width ="900" >
+
+
 #### Assumptions:
 
  > - The ID field of Customers is a string of 11 characters
