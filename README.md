@@ -84,30 +84,30 @@ record as a percentage)
 
  > - Gender attribute of a customer can be stored as a string
 
- > ● A maintenance technician can repair many airplanes and an airplane can be
+ > - A maintenance technician can repair many airplanes and an airplane can be
   repaired by many maintenance technicians
 
- > ● An airplane can only be controlled by one pilot and a pilot can only control one
+ > - An airplane can only be controlled by one pilot and a pilot can only control one
   airplane
 
- > ● We assume each customer has a unique identification as ​ssn
+ > - We assume each customer has a unique identification as ​ssn
 
- > ● We assume each plane has two unique attributes which are the plane number
+ > - We assume each plane has two unique attributes which are the plane number
   and plane id.
 
- > ● We assume each customer who gets into the waiting list for a flight will be given
+ > - We assume each customer who gets into the waiting list for a flight will be given
   a unique waiting number.
 
- > ● We assume that each flight’s cost could be changed on different days or special
+ > - We assume that each flight’s cost could be changed on different days or special
   days.
 
- > ● We assume each flight can have many tickets (economy-class, first-class, etc)
+ > - We assume each flight can have many tickets (economy-class, first-class, etc)
 
 
 
 # Phase 2: Relational Schema Design
 
-
+<img src="Phase2/image2.pdf " width ="900" >
 
 
 # Phase 3: Implementation/Requirement
