@@ -348,14 +348,14 @@ public class DBproject{
 		// Validate Model
 		while (true){
 			model = readStringHelper("Model");
-			if (make.length() == 0){
+			if (model.length() == 0){
 				System.out.println("*********************************");
-				System.out.println("Please enter a make for the plane");
+				System.out.println("Please enter a model for the plane");
 				System.out.println("*********************************\n");
 			}
-			else if (make.length() > 32){
+			else if (model.length() > 64){
 				System.out.println("********************************************************");
-				System.out.println("The make entered is too long. Plase enter a shorter make");
+				System.out.println("The model entered is too long. Plase enter a shorter model");
 				System.out.println("********************************************************\n");
 			}
 			else {
@@ -385,7 +385,7 @@ public class DBproject{
 			// if number of seats is less than 0 or greater than 500 then it is invalid so keep looping otherwise break
 			if (seats <= 0 || seats >= 500){
 				System.out.println("********************************************************");
-				System.out.println("Invalid input. Number of seats must be between 0 and 500");
+				System.out.println("Invalid input. Number of seats must be between 1 and 499");
 				System.out.println("*********************************************************\n");
 			}
 			else {
@@ -1031,7 +1031,7 @@ System.out.println(String.format("%d", ArowCount));
 			System.out.println("Something went wrong, please try again!");
 			System.out.println("***************************************\n");
 
-			System.err.println(e.getMessage());         
+			//System.err.println(e.getMessage());         
 		}
 	}
 

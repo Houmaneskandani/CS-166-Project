@@ -140,8 +140,7 @@ record as a percentage)
 
 
 
-
-# Phase 3: Implementation/Requirement
+# Phase 3: Implementation/Requirements
 
 **Our Task :**
 
@@ -166,7 +165,9 @@ source ./run.sh "Database Name" "Server port" "User name"
 
    - To validate the id, we check if there is any row in the Plane table with the inputted id. If there is then we ask for a new id otherwise we continue.
 
-   - To validate the make and model, we verify that inputted make and model are not a empty string or contain more than 32 characters
+   - To validate the make, we verify that inputted make is not an empty string or contains more than 32 characters
+
+   - To validate the model, we verify that inputted model is not an empty string or contains more than 64 characters
 
    - To validate the year, we verify that inputted year is not less than 1970 or 2020
 
