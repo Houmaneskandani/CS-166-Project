@@ -789,6 +789,7 @@ public class DBproject{
 		// check the flight number	  
 		startingMessage();
 		int rowCount = 0;
+		int rowCount2 = 0;
 		int flightNum = 0;
 		String query ="";
 		String query2 ="";
@@ -807,10 +808,21 @@ public class DBproject{
 			}
 	    }
 	
-		  // check the depart date and time
-		departDate = constructDateInput("Departure Date and time");
-		System.out.println(String.format("%s", departDate));
+			// check the depart date and time
+			departDate = constructDateInput("Departure Date and time");
+			System.out.println(String.format("%s", departDate));
+			// check if there is departure date and time exist
+                	rowCount2 = executeSelectQuery(String.format("SELECT * FROM Flight F WHERE F.actual_departure_date = '%s';", departDate), esql);
+                       
+			if (rowCount2 == 0){
+                                System.out.println("There is no flight available. Please enter a valid departure date and time");
+                        }
+                        else {
+                                break;
+                        }
+
 	
+
 /*
 		String sucessMessage = "";
 		try{
