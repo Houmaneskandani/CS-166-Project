@@ -9,6 +9,7 @@ about the customers that use the airline services.
 
 ## Requirement Analysis
 
+### Airline Management:
  > 1. Given a flight number, get the flight’s schedule for the week
 	(A flight may be scheduled on multiple days in a week)
 
@@ -41,35 +42,35 @@ waiting list, (3) actually flew on the flight (for flights already completed)
  > 9. Given a plane ID and a date range, list all the dates and the codes for repairs performed
 
 ### Customers:
-```
-1. Given a destination and departure city, find all flights on a given date.
-	● Must return departure and arrival time, number of stops scheduled, and on-time
-record (as a percentage)
-```
-```
-2. Given a flight number, find the ticket cost.
-```
-```
-3. Given a flight number, find the airplane type (make and model)
-```
-```
-4. Make a reservation for a flight
-	● Get on the waitlist for a flight if the flight is full
-```
+
+ > 1. Given a destination and departure city, find all flights on a given date.
+	( Must return departure and arrival time, number of stops scheduled, and on-time
+record as a percentage)
+
+
+ > 2. Given a flight number, find the ticket cost.
+
+
+ > 3. Given a flight number, find the airplane type (make and model)
+
+
+ > 4. Make a reservation for a flight
+	( Get on the waitlist for a flight if the flight is full)
+
 ### Maintenance Staff:
-```
-1. Given a plane ID and a date range, list all the dates and the codes for repairs performed
-```
-```
-2. Given a pilot ID, list all maintenance requests made by the pilot
-```
-```
-3. After each repair, make an entry showing plane ID, repair code, and date of repair
-```
+
+ > 1. Given a plane ID and a date range, list all the dates and the codes for repairs performed
+
+
+ > 2. Given a pilot ID, list all maintenance requests made by the pilot
+
+
+ > 3. After each repair, make an entry showing plane ID, repair code, and date of repair
+
 ### Pilots:
-```
-1. Make maintenance request listing plane ID, repair code requested, and date of request
-```
+
+ > 1. Make maintenance request listing plane ID, repair code requested, and date of request
+
 
 
 # Phase 1: ER Design
