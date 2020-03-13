@@ -10,7 +10,7 @@ about the customers that use the airline services.
 ## Requirement Analysis
 
  > 1. Given a flight number, get the flight’s schedule for the week
-	* A flight may be scheduled on multiple days in a week
+	(A flight may be scheduled on multiple days in a week)
 
 
  > 2. Given a flight and a date, get (1) the number of seats still available and (2) number of
@@ -29,7 +29,7 @@ waiting list, (3) actually flew on the flight (for flights already completed)
 
 
  > 6. Given a reservation number, retrieve information about the travelers under that number
-	● First & Last Name, Gender, Date of birth, Address, Phone number, Zip Code
+	( First & Last Name, Gender, Date of birth, Address, Phone number, Zip Code)
 
 
  > 7. Given a plane number, get its make, model, age, and last repair date
