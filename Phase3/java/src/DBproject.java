@@ -475,7 +475,7 @@ public class DBproject{
 
 		// Validate cost
 		while (true){
-			cost = readIntegerHelper("Cost");
+			cost = readIntegerHelper("Cost (Dollars)");
 			if (cost <= 0){
 				System.out.println("Invalid cost. Please enter a value greater then 0");
 			}
@@ -673,10 +673,10 @@ public class DBproject{
 			//flightNum = FlightRecord.get(0).get(0);
 
 			// If resevation status is W:
-			if (ReservationRecord.get(0).get(3) == "W"){
+			if (ReservationRecord.get(0).get(3).equals("W")){
 				System.out.println("Customer is currently waitlised for Flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
 			}// If resereation status is R
-			else if (ReservationRecord.get(0).get(3) == "R"){
+			else if (ReservationRecord.get(0).get(3).equals("R")){
 
 				System.out.println("Customer is reserved for flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
 				System.out.println("Woud you like to change customer's reservation status to Confirmed? (Y/N)");
@@ -695,7 +695,7 @@ public class DBproject{
 			} // If reservation status is C
 			else {
 				// Display confirmation
-				System.out.println("Customer is confirmed for Flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
+				System.out.println("Customer is confirmed for flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
 				System.out.println("No further action necessary");
 			}
 		} // If there is no reservation
@@ -817,8 +817,8 @@ public class DBproject{
 //=====================================================================================================================================================================
 	public static void ListsTotalNumberOfRepairsPerPlane(DBproject esql) {//7
 		// Count number of repairs per planes and list them in descending order. Excute query and print
-		try {
-			int rowCount = esql.executeQueryAndPrintResult("SELECT P.*, COUNT(R.rid) as NumOfRepairs FROM Plane P, Repairs R WHERE P.id = R.plane_id GROUP BY P.id ORDER BY NumOfRepairs DESC;");		
+		try {	
+			int rowCount = esql.executeQueryAndPrintResult("SELECT P.id as ID, P.make as Make, P.model as Model, COUNT(R.rid) as NumOfRepairs FROM Plane P, Repairs R WHERE P.id = R.plane_id GROUP BY P.id ORDER BY NumOfRepairs DESC;");		
 		}
 		 catch (Exception e){
 			System.out.println("Something went wrong. Please try again!");
@@ -887,7 +887,7 @@ public class DBproject{
 		} 
 		String query = String.format("SELECT COUNT(*) as NumberOfPassengers FROM Customer C, Reservation R WHERE R.cid = C.id and R.status = '%s' and R.fid = %d;", passengerStatus, flightNumber);
 		String numbeOfPassengers = executeSelectQueryGetResults(query, esql).get(0).get(0);
-		System.out.print("Number of passegers ");
+		System.out.print("Number of passengers ");
 		if (passengerStatus.equals("W")) System.out.print("waitlisted: ");
 		else if (passengerStatus.equals("C")) System.out.print("confirmed: ");
 		else System.out.print("reserved: ");
@@ -897,7 +897,9 @@ public class DBproject{
 /*************************************************************************  Helper Functions ********************************************************************* */
 	
 	public static void startingMessage(){
+		System.out.println("***************************************");
 		System.out.println("Please enter the following information:");
+		System.out.println("***************************************");
 	}
 
 	// Read String values and handle exceptions
