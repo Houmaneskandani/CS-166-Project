@@ -414,7 +414,9 @@ public class DBproject{
 			pilotNumber = readIntegerHelper("Pilot number");
 			rowCount = executeSelectQuery(String.format("SELECT * FROM Pilot P WHERE P.id = %d;", pilotNumber), esql); 
 			if (rowCount > 0){
+				System.out.println("**************************************************************");
 				System.out.println("Pilot number already exists. Please enter a valid Pilot number");
+				System.out.println("**************************************************************\n");
 			}
 			else {
 				break;
@@ -425,7 +427,9 @@ public class DBproject{
 		while (true){
 			fullname = readStringHelper("fullname");
 			if (fullname.length() == 0){
+				System.out.println("*******************************************");
 				System.out.println("Invalid name. Please enter correct fullname");
+				System.out.println("********************************************\n");
 			}
 			else {
 				break;
@@ -436,7 +440,9 @@ public class DBproject{
 		while(true){
 			nationality = readStringHelper("nationality");
 			if(nationality.length() == 0){
+				System.out.println("*****************************************************");
 				System.out.println("Invalid nationality. Please enter correct nationality");
+				System.out.println("*****************************************************\n");
 			}
 			else {
 				break;
@@ -621,7 +627,9 @@ public class DBproject{
 			technicianId = readIntegerHelper("Technician id");
 			rowCount = executeSelectQuery(String.format("SELECT * FROM Technician T WHERE T.id = %d;", technicianId), esql);
 	                if (rowCount > 0){
-            	              System.out.println("Technician id already exists. Please enter a valid technician id");
+							  System.out.println("****************************************************************");
+							  System.out.println("Technician id already exists. Please enter a valid technician id");
+							  System.out.println("****************************************************************\n");
            		}
             		else {
               		 	break;
@@ -632,7 +640,9 @@ public class DBproject{
 		while (true){
 			fullname = readStringHelper("fullname"); 
 			if (fullname.length() == 0){
+				System.out.println("*******************************************");
 				System.out.println("Invalid name. Please enter correct fullname");
+				System.out.println("*******************************************\n");
 			}
 			else {
 				break;
@@ -800,7 +810,9 @@ public class DBproject{
 			flightNum = readIntegerHelper("flight number");
 			rowCount = executeSelectQuery(String.format("SELECT * FROM Flight F WHERE F.fnum = %d;", flightNum), esql);
 			if (rowCount == 0){
+				System.out.println("****************************************************************");
 				System.out.println("There is no flight available. Please enter a valid flight number");
+				System.out.println("****************************************************************\n");
 			}
 			else {
 				break;
@@ -903,7 +915,9 @@ System.out.println(String.format("%d", ArowCount));
               	        }        
 		}
 		catch (Exception e){
-                        System.out.println("Something went wrong. Please try again!");
+						System.out.println("***************************************");
+						System.out.println("Something went wrong. Please try again!");
+						System.out.println("***************************************\n");
                         System.err.println(e.getMessage());
                  }
 	}
@@ -1122,7 +1136,9 @@ System.out.println(String.format("%d", ArowCount));
                 while (true){
                         year = readIntegerHelper("Year");
                         if ( year > currentYear){
-                                System.out.println("Invalid year. Please enter a valid year");
+								System.out.println("***************************************");
+								System.out.println("Invalid year. Please enter a valid year");
+								System.out.println("***************************************\n");
                         }
                         else {
                                 break;
@@ -1132,7 +1148,9 @@ System.out.println(String.format("%d", ArowCount));
                 while (true){
                         month = readIntegerHelper("Month");
                         if (month < 1 || month > 12){
-                                System.out.println("Invalid month. Please enter a valid month");
+								System.out.println("*****************************************");
+								System.out.println("Invalid month. Please enter a valid month");
+								System.out.println("*****************************************\n");
                         }
                         else{
                                 break;
@@ -1142,7 +1160,9 @@ System.out.println(String.format("%d", ArowCount));
                 while (true){
                         day = readIntegerHelper("Day");
                         if (day < 1 || day > 31){
-                                System.out.println("Invalid day. Please enter a valid day");
+								System.out.println("*************************************");
+								System.out.println("Invalid day. Please enter a valid day");
+								System.out.println("*************************************\n");
                         }
                         else{
                                 break;
@@ -1152,7 +1172,9 @@ System.out.println(String.format("%d", ArowCount));
                 while (true){
                         hour = readIntegerHelper("hour");
                         if (hour < 0 || hour > 23){
-                                System.out.println("Invalid hour. Please enter a valid hour");
+								System.out.println("***************************************");
+								System.out.println("Invalid hour. Please enter a valid hour");
+								System.out.println("***************************************\n");
                         }
                         else{
                                 break;
@@ -1162,13 +1184,14 @@ System.out.println(String.format("%d", ArowCount));
                 while (true){
                         minutes = readIntegerHelper("minutes");
                         if (minutes < 0 || minutes > 59){
-                                System.out.println("Invalid minutes. Please enter a valid minutes");
-                        }
+								System.out.println("*********************************************");
+								System.out.println("Invalid minutes. Please enter a valid minutes");
+								System.out.println("*********************************************\n");
+						}
                         else{
                                 break;
                         }
                 }
-
                 return Integer.toString(year) + "-" + Integer.toString(month) + "-" + Integer.toString(day) + " " + Integer.toString(hour) + ":" + Integer.toString(minutes);
         }
 
@@ -1189,7 +1212,7 @@ System.out.println(String.format("%d", ArowCount));
 				break;
 			}
 			else {
-				System.out.print("Invalid choice. ");
+				System.out.print("Invalid choice.");
 			}
 		}
 		return procceed;
