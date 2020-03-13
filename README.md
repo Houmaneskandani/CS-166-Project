@@ -77,7 +77,7 @@ record as a percentage)
 
 **Our Task :**
 
-● Design a logical model of your database using the ER-model with provided requirement.
+● Design a logical model of our database using the ER-model with provided requirement.
 
 <img src="Phase1/IMAGE/image.png " width ="900" >
 
