@@ -1,5 +1,5 @@
  # CS-166-Project 
-Description:
+**Description:
 In this project, we create model and build an airline management system. We use this
 system to track information about different airlines, the planes they own, the maintenance of
 those planes, the pilots they employ and the trips that the pilots make, as well as information
