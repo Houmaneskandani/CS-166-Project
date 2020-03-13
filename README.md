@@ -209,6 +209,7 @@ find the number of available seats in the flight.
  > • List total number of repairs per plane in descending order: Return the list of planes in de-
 creasing order of number of repairs that have been made on the planes.
 
+    To implement this requirement, we perform a SELECT query that joins the Plane and Repairs tables using the plane id. The query groups records by plane id and counts the number of repairs per each plane. At the end, the records are displayed to the user in desceding order of number of repairs per plane.
 
  > • List total number of repairs per year in ascending order: Return the years with the number of
 repairs made in those years in ascending order of number of repairs per year.

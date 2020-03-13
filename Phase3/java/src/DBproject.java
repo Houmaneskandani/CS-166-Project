@@ -847,14 +847,15 @@ public class DBproject{
 //=====================================================================================================================================================================
 	public static void ListsTotalNumberOfRepairsPerPlane(DBproject esql) {//7
 		// Count number of repairs per planes and list them in descending order. Excute query and print
-		try {	
+		try {
+			System.out.println();
 			int rowCount = esql.executeQueryAndPrintResult("SELECT P.id as ID, P.make as Make, P.model as Model, COUNT(R.rid) as NumOfRepairs FROM Plane P, Repairs R WHERE P.id = R.plane_id GROUP BY P.id ORDER BY NumOfRepairs DESC;");		
+			System.out.println();
 		}
 		 catch (Exception e){
 			System.out.println("***************************************");
 			System.out.println("Something went wrong. Please try again!");
 			System.out.println("***************************************\n");
-			System.err.println(e.getMessage());         
 		 }	
 	}
 //=========================================================================================================================================================================
