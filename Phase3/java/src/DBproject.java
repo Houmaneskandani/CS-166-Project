@@ -674,28 +674,28 @@ public class DBproject{
 
 			// If resevation status is W:
 			if (ReservationRecord.get(0).get(3).equals("W")){
-				System.out.println("Customer is currently waitlised for Flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
+				System.out.println("Customer is currently WAITLISTED for Flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
 			}// If resereation status is R
 			else if (ReservationRecord.get(0).get(3).equals("R")){
 
-				System.out.println("Customer is reserved for flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
+				System.out.println("Customer is RESERVED for flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
 				System.out.println("Woud you like to change customer's reservation status to Confirmed? (Y/N)");
 				procceed = getYesNoAnswer();
 
 				// Update reservation status to confirm
 				if (procceed){
 					query = String.format("UPDATE Reservation R SET R.status = 'C' WHERE R.rnum = %s", reservationNum);
-					sucessMessage = String.format("Successfully confirmed resevation (%s) for flight %d ", reservationNum, flightNumber);
+					sucessMessage = String.format("Successfully CONFIRMED resevation (%s) for flight %d ", reservationNum, flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);
 				}
 				else {
 					// User still reserved
-					System.out.println("Customer is still reserved for Flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
+					System.out.println("Customer is still RESERVED for flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
 				}
 			} // If reservation status is C
 			else {
 				// Display confirmation
-				System.out.println("Customer is confirmed for flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
+				System.out.println("Customer is CONFIRMED for flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
 				System.out.println("No further action necessary");
 			}
 		} // If there is no reservation
@@ -707,23 +707,23 @@ public class DBproject{
 				if (procceed){
 					// Crates a reservation with W status
 					query = String.format("INSERT INTO Reservation (%d, %d, %d, 'W')", generateValidId(), customerId, flightNumber); 
-					sucessMessage = String.format("Sucessfully waitlisted customer for flight - %d", flightNumber);
+					sucessMessage = String.format("Sucessfully WAITLISTED customer for flight (%d)", flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);
 				}
 				else {
-					System.out.println(String.format("Customer was not waitlisted for flight - %d", flightNumber));
+					System.out.println(String.format("Customer was not WAITLISTED for flight (%d)", flightNumber));
 				}
 			}
 			else {
 				// TO DO CREATE RESEVATION NUMBERS
-				System.out.println("Flight has open seats. Wold you like to confirm or reseve the flight for the customer?");
+				System.out.println("Flight has open seats. Wold you like to CONFIRM or RESERVE the flight for the customer?");
 				// Check if user wants to confirm or reseve a flight
 				String answer = "";
 				Scanner scanner = new Scanner(System.in);
 				boolean confirmed = false;
 
 				while(true){
-					System.out.println("Pleaser enter C/c to confirm the flight reservation or R/r to reserve the flight reservation");
+					System.out.println("Pleaser enter C/c to CONFIRM the flight or R/r to RESERVE the flight");
 					answer = scanner.nextLine();
 					if (answer.equals("C") || answer.equals("c")){
 						confirmed = true;
@@ -740,12 +740,12 @@ public class DBproject{
 				scanner.close();
 				if (confirmed){
 					query = String.format("INSERT INTO Reservation (%d, %d, %d, 'C')", generateValidId() ,customerId, flightNumber); 
-					sucessMessage = String.format("Customer confirmed for flight %d", flightNumber);
+					sucessMessage = String.format("Sucessfully CONFIRMED customer for flight (%d)", flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);					
 				}
 				else {
 					query = String.format("INSERT INTO Reservation (%d, %d, %d, 'R')",  generateValidId(), customerId, flightNumber); 
-					sucessMessage = String.format("Customer reserved for flight: %s", flightNumber);
+					sucessMessage = String.format("Sucessfully RESERVED customer for flight (%d)", flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);	
 				}
 			}
@@ -944,14 +944,15 @@ public class DBproject{
 			rowCount = esql.executeQuery(query);
 		 }
 		 catch (Exception e){
-			System.err.println (e.getMessage());         
+			System.out.println("Something went wrong, please try again!");
+			//System.err.println(e.getMessage());           
 		 }	
 		 return rowCount;
 	}
 
 	public static void executeUpdateInsertQuery(String query, String sucessMessage, DBproject esql){
 		try {
-			System.out.println(query);
+			//System.out.println(query);
 			System.out.println(); 
 			esql.executeUpdate(query);
 			System.out.println(sucessMessage);
@@ -959,7 +960,7 @@ public class DBproject{
 		}
 		catch (Exception e){
 			System.out.println("Something went wrong, please try again!");
-			System.err.println(e.getMessage());         
+			//System.err.println(e.getMessage());         
 		}
 	}
 
@@ -970,13 +971,13 @@ public class DBproject{
 		 }
 		 catch (Exception e){
 			System.out.println("Something went wrong. Please try again!");
-			System.err.println(e.getMessage());         
+			//System.err.println(e.getMessage());         
 		 }	
 		 return records;
 	}
 
 	public static String DisplayFlightInfo(List<String> FlightRecord){
-		return "Number: " + FlightRecord.get(0) + "\nCost: $ " + FlightRecord.get(1) + "\nDeparting on: " + FlightRecord.get(4) + "\n";
+		return "\nNumber: " + FlightRecord.get(0) + "\nCost: $" + FlightRecord.get(1) + "\nDeparting on: " + FlightRecord.get(4) + "\n";
 	}
 
 	// Asks user for year, month, and date information and constructs a date string in the format yyyy-mm-dd
