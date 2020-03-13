@@ -677,15 +677,14 @@ public class DBproject{
 				System.out.println("Customer is currently WAITLISTED for Flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
 			}// If resereation status is R
 			else if (ReservationRecord.get(0).get(3).equals("R")){
-
 				System.out.println("Customer is RESERVED for flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
-				System.out.println("Woud you like to change customer's reservation status to Confirmed? (Y/N)");
+				System.out.println("Woud you like to change customer's reservation status to COFIRMED? (Y/N)");
 				procceed = getYesNoAnswer();
 
 				// Update reservation status to confirm
 				if (procceed){
 					query = String.format("UPDATE Reservation R SET R.status = 'C' WHERE R.rnum = %s", reservationNum);
-					sucessMessage = String.format("Successfully CONFIRMED resevation (%s) for flight %d ", reservationNum, flightNumber);
+					sucessMessage = String.format("Successfully CONFIRMED resevation (%s) for flight (%d) ", reservationNum, flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);
 				}
 				else {
@@ -702,7 +701,7 @@ public class DBproject{
 		else{
 			// If flight is full
 			if (isFlightFull(flightNumber, esql)){
-				System.out.println("Flight is currently full. Would you like to add the customer to the waitlist? (Y/N)");
+				System.out.println("\nFlight is currently full. Would you like to add the customer to the waitlist? (Y/N)");
 				procceed = getYesNoAnswer();
 				if (procceed){
 					// Crates a reservation with W status
@@ -719,12 +718,10 @@ public class DBproject{
 				System.out.println("Flight has open seats. Wold you like to CONFIRM or RESERVE the flight for the customer?");
 				// Check if user wants to confirm or reseve a flight
 				String answer = "";
-				Scanner scanner = new Scanner(System.in);
 				boolean confirmed = false;
 
 				while(true){
-					System.out.println("Pleaser enter C/c to CONFIRM the flight or R/r to RESERVE the flight");
-					answer = scanner.nextLine();
+					answer = readStringHelper("Pleaser enter C/c to CONFIRM the flight or R/r to RESERVE the flight")
 					if (answer.equals("C") || answer.equals("c")){
 						confirmed = true;
 						break;
@@ -737,7 +734,6 @@ public class DBproject{
 						System.out.print("Invalid choice. ");
 					}
 				}
-				scanner.close();
 				if (confirmed){
 					query = String.format("INSERT INTO Reservation (%d, %d, %d, 'C')", generateValidId() ,customerId, flightNumber); 
 					sucessMessage = String.format("Sucessfully CONFIRMED customer for flight (%d)", flightNumber);
