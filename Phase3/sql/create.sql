@@ -93,7 +93,7 @@ CREATE TABLE Reservation
 -- Adds Serial to automatically increment Id
 CREATE TABLE FlightInfo
 (
-	fiid SERIAL INTEGER NOT NULL,
+	fiid INTEGER NOT NULL,
 	flight_id INTEGER NOT NULL,
 	pilot_id INTEGER NOT NULL,
 	plane_id INTEGER NOT NULL,
@@ -120,7 +120,7 @@ CREATE TABLE Repairs
 -- Adds Serial to automatically increment Id
 CREATE TABLE Schedule
 (
-	id SERIAL INTEGER NOT NULL,
+	id INTEGER NOT NULL,
 	flightNum INTEGER NOT NULL,
 	departure_time DATE NOT NULL,
 	arrival_time DATE NOT NULL,
