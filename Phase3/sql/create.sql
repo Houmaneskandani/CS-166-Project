@@ -90,9 +90,10 @@ CREATE TABLE Reservation
 	FOREIGN KEY (fid) REFERENCES Flight(fnum)
 );
 
+-- Adds Serial to automatically increment Id
 CREATE TABLE FlightInfo
 (
-	fiid INTEGER NOT NULL,
+	fiid SERIAL INTEGER NOT NULL,
 	flight_id INTEGER NOT NULL,
 	pilot_id INTEGER NOT NULL,
 	plane_id INTEGER NOT NULL,
@@ -116,9 +117,10 @@ CREATE TABLE Repairs
 	FOREIGN KEY (technician_id) REFERENCES Technician(id)
 );
 
+-- Adds Serial to automatically increment Id
 CREATE TABLE Schedule
 (
-	id INTEGER NOT NULL,
+	id SERIAL INTEGER NOT NULL,
 	flightNum INTEGER NOT NULL,
 	departure_time DATE NOT NULL,
 	arrival_time DATE NOT NULL,
