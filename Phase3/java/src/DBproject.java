@@ -1049,10 +1049,4 @@ public class DBproject{
 
 		return Integer.parseInt(numOfSeatsInPlane) <= Integer.parseInt(numOfTicketsSold);
 	}
-	// public static int generateValidId(String targetTable){
-	// 	Random rand = new Random();
-	// 	while(true){
-	// 		int randomId = rand.nextInt(9000) + 3000;
-	// 	}
-	// }
 }
