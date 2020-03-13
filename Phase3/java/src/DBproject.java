@@ -1024,22 +1024,22 @@ public class DBproject{
 
 	public static boolean getYesNoAnswer(){
 		String answer = "";
-		Scanner scanner = new Scanner(System.in);
+		boolean procceed = false;
 		while(true){
-			System.out.println("Pleaser enter Y/y to continue or N/n to stop");
-			answer = scanner.nextLine();
+			answer = readStringHelper("Pleaser enter Y/y to continue or N/n to stop");
 			if (answer.equals("Y") || answer.equals("y")){
-				scanner.close();
-				return true;
+				procceed = true;
+				break;
 			} 
 			else if (answer.equals("N") || answer.equals("n")){
-				scanner.close();
-				return false;
+				procceed = false;
+				break;
 			}
 			else {
 				System.out.print("Invalid choice. ");
 			}
 		}
+		return procceed;
 	}
 
 	public static boolean isFlightFull(int flightNumber, DBproject esql){
