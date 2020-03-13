@@ -158,12 +158,21 @@ source ./compile.sh
 source ./run.sh flightDB 5432 user
 ```
 
-## Client application requirement :
+## Client Application Requirements:
 
 
  > • Add Plane: Ask the user for details of a plane and add it to the DB
+    To implement this requirement, we ask the user to input various information for a new plane (id, make, model, year, and seats).
+    
+    - To validate the id, we check if there is any row in the Plane table with the inputted id. If there is then we ask for a new id otherwise we continue.
 
+    - To validate the make and model, we verify that inputted make and model are not a empty string or contain more than 32 characters
 
+    - To validate the year, we verify that inputted year is not less than 1970 or 2020
+
+    - To validate the number of seats we verify that inputted number is not less or equal to zero or is greater or equal to five-hundred
+
+    If all the inputs are valid, we use an INSERT statement to create a new  record containning the inputted information in the Plane table
  > • Add Pilot: Ask the user for details of a pilot and add it to the DB
 
 
