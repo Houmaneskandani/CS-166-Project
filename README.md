@@ -197,7 +197,7 @@ source ./run.sh "Database Name" "Server port" "User name"
 
    - To validate the number of tickets sold and the number of stops, we verify that inputted numbers are not less than 0
 
-   - To validate the departure and arrival date, we ask the user to input the day, month, and year of the date, validating each one of those individually. Using the information gathered, we construct a string to represent the respective date in the format YYYY-MM-DD (date format that the database exepcts)
+   - To validate the departure and arrival date, we ask the user to input the day, month, and year of the date, validating each one of those individually. Using the information gathered, we construct a string to represent the respective date in the format YYYY-MM-DD (date format that the database exepcts). We assume user needs to input the date not the time.
 
    - To validate the plane and pilot ids, we verify that each id belongs to a row in a table (Plane or Pilot respectively). Note, we ask the user to input the pilot and plane ids because we need them to create a new row in the Flight Info table
 
