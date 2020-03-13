@@ -189,7 +189,7 @@ source ./run.sh flightDB 5432 user
 
  > • Add Flight: Ask the user for details of a flight and add it to the DB
 
-    To implement this requirement, we ask the user to input various information to create a new Flight, FlightInfo, and Schedule records 
+    To implement this requirement, we ask the user to input various information to create a new Flight, FlightInfo, and Schedule records.
 
     - To validate the flight number, we check if there is any row in the Flight table with the inputted flight number. If there is then we ask for a new flight number otherwise we continue.
 
@@ -245,3 +245,12 @@ repairs made in those years in ascending order of number of repairs per year.
  > • Find total number of passengers with a given status: For a given flight and passenger status,
 return the number of passengers with the given status.
 
+      To implement this requirement, we ask the user to provide a flight number and passenger status (W, C, R). We perform the following validation:
+
+      - To validate the flight number, we check if there is any record in the Flight table with the inputted flight number. If there is not such record then we ask for a new flight number otherwise we continue.
+
+      - We ask the user to input W to select waitlisted passengers, C  to select confirmed passengers, and R for reserved passengers
+     
+      - To validate the passenger status, we check whether the input is W, C, or R. If it is none of them, we ask the user to enter a valid choice
+
+      After all inputs is validate, we perform a SELECT query that counts the number of reservation records that have the inputted flight number and passenger status in their fid and status fields respectively
