@@ -820,20 +820,36 @@ public class DBproject{
 	    
 		}	
 			// check the depart date and time
-			departDate = constructDateInput("Departure Date and time");
-			System.out.println(String.format("%s", departDate));
-/*			// check if there is departure date and time exist
-                	rowCount2 = executeSelectQuery(String.format("SELECT * FROM Flight F WHERE F.actual_departure_date = '%s';", departDate), esql);
-                       
-			if (rowCount2 == 0){
-                                System.out.println("There is no flight available. Please enter a valid departure date and time");
+		//	departDate = constructDateInput("Departure Date and time");
+		//	System.out.println(String.format("%s", departDate));
+			// check if there is departure date and time exist
+                while(true){
+/*                        flightNum = readIntegerHelper("flight number");
+                        rowCount = executeSelectQuery(String.format("SELECT * FROM Flight F WHERE F.fnum = %d;", flightNum), esql);
+                        if (rowCount == 0){
+                                System.out.println("****************************************************************");
+                                System.out.println("There is no flight available. Please enter a valid flight number");
+                                System.out.println("****************************************************************\n");
                         }
+                        else {  
+                                break;
+                        }
+*/	                //check the depart date and time
+	               departDate = constructDateInput("Departure Date and time");
+	                System.out.println(String.format("%s", departDate));
+			rowCount2 = executeSelectQuery(String.format("SELECT * FROM Flight F WHERE F.actual_departure_date = '%s';", departDate), esql);
+                      
+			if (rowCount2 == 0){
+                                System.out.println("****************************************************************");
+                                System.out.println("There is no flight available. Please try entring date and time again");
+                                System.out.println("****************************************************************\n");
+			 }
                         else {
                                 break;
                         }
 
 	      }
-*/
+
 /*
 		String sucessMessage = "";
 		try{
