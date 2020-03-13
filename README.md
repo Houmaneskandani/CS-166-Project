@@ -40,7 +40,7 @@ waiting list, (3) actually flew on the flight (for flights already completed)
 ```
 9. Given a plane ID and a date range, list all the dates and the codes for repairs performed
 ```
-## Customers:
+### Customers:
 ```
 1. Given a destination and departure city, find all flights on a given date.
 	● Must return departure and arrival time, number of stops scheduled, and on-time
@@ -56,7 +56,7 @@ record (as a percentage)
 4. Make a reservation for a flight
 	● Get on the waitlist for a flight if the flight is full
 ```
-## Maintenance Staff:
+### Maintenance Staff:
 ```
 1. Given a plane ID and a date range, list all the dates and the codes for repairs performed
 ```
@@ -66,7 +66,7 @@ record (as a percentage)
 ```
 3. After each repair, make an entry showing plane ID, repair code, and date of repair
 ```
-## Pilots:
+### Pilots:
 ```
 1. Make maintenance request listing plane ID, repair code requested, and date of request
 ```
