@@ -762,6 +762,7 @@ public class DBproject{
 		int flightNum = 0;
 		String query ="";
 		String query2 ="";
+                String departDate ="";
                 int totalAvailableSeats = 0;
                 int totalNumBooked = 0;
                 int totalNumSeats = 0;
@@ -776,35 +777,50 @@ public class DBproject{
 			}
 	    }
 	
-		  // check the depart date
-		String departDate ="";
-		while(true){
-			departDate = readStringHelper("Depart date");
-			rowCount = executeSelectQuery(String.format("SELECT * FROM Flight F WHERE F.actual_departure_date = %d;", departDate), esql);
-			if (rowCount == 0){
-				System.out.println("Please enter a valid departure date");
-			}
-			else {
-				break;
-			}
+		  // check the depart date and time
+		departDate = constructDateInput("Departure Date and time");
+		System.out.println(String.format("%s", departDate));
+	
+/*
+		String sucessMessage = "";
+		try{
+
+                  //      query = String.format("SELECT P.seats FROM Plane P, FlightInfo FI, Flight F  WHERE FI.flight_id = F.fnum AND FI.plane_id = P.id AND F.fnum = %d AND F.actual_departure_date ='%s';",flightNum, departDate);
+        //	query = String.format("SELECT seats FROM Plane  WHERE id = 2 ;");        
+	        //totalNumSeats = esql.executeQuery(query);
+                //System.out.println(String.format("%d", totalNumSeats));
+
+int ArowCount = esql.executeQueryAndPrintResult("SELECT seats FROM Plane  WHERE id = 2 ;");
+                                      //  sucessMessage = String.format("Sucessfully RESERVED customer for flight (%d)");
+                                       // executeUpdateInsertQuery(query, sucessMessage, esql);
+System.out.println(String.format("%d", ArowCount));
 		}
-          	try{
+                catch(Exception e){
+                        System.out.println("Something went wrong. Please try again!");
+                        System.err.println(e.getMessage());
+                }
+*/
+
+ 
+         	try{
 			// total  number of seats 
-			query = String.format("SELECT P.seats FROM Plane P, FlightInfo FI, Flight F  WHERE FI.flight_id = F.fnum AND F.fnum = %d AND F.actual_departure_date = %s AND FI.plane_id = P.id;",flightNum, departDate );
-			System.out.println();
+			query = String.format("SELECT P.seats FROM Plane P, FlightInfo FI, Flight F  WHERE FI.flight_id = F.fnum AND F.fnum = %d AND F.actual_departure_date ='%s' AND FI.plane_id = P.id;",flightNum, departDate);
+		  // NOT FIXED ( the result of query will nat save in variable totalNumSeats instead it will return 1 why ???
 			totalNumSeats = esql.executeQuery(query);
+			System.out.println(String.format("The flight has (%d)  seats", totalNumSeats));
 			// number of reserved seats/ booked seats
-			query2 = String.format("SELECT COUNT(*) FROM Reservation R, Flight F  WHERE R.fid = F.fnum AND R.status = R;");
+			query2 = String.format("SELECT COUNT(*) FROM Reservation R, Flight F  WHERE R.fid = F.fnum AND R.status = 'R';");
 			System.out.println();
-			totalNumBooked = esql.executeQuery(query2);
+	          // NOT FIXED ( the result of query will nat save in variable totalNumBooked instead it will return 1 why ???
+                        totalNumBooked = esql.executeQuery(query2);
 			// number of availble seats
 			totalAvailableSeats = totalNumSeats - totalNumBooked;
                 	if (totalAvailableSeats == 0){
-                        System.out.println(" No seats available");
+                	        System.out.println(" No seats available");
                 	}
 			else{   
-			System.out.println(String.format("The flight has (%d) available seats", totalAvailableSeats));
-			System.out.println();
+				System.out.println(String.format("The flight has (%d) available seats", totalAvailableSeats));
+				System.out.println();
 			}
 		}
 		catch(Exception e){
@@ -1021,6 +1037,72 @@ public class DBproject{
 
 		return Integer.toString(year) + "-" + Integer.toString(month) + "-" + Integer.toString(day); 
 	}
+
+        // Asks user for year, month,hour,minutes and date information and constructs a date string in the format yyyy-mm-dd hh:mm
+        public static String constructDateInput (String DateType){
+                int year = 0;
+                int month = 0;
+                int day = 0;
+		int hour = 0;
+		int minutes = 0;
+                System.out.println("Enter the following information for the " + DateType + ":");
+                int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+
+                while (true){
+                        year = readIntegerHelper("Year");
+                        if ( year > currentYear){
+                                System.out.println("Invalid year. Please enter a valid year");
+                        }
+                        else {
+                                break;
+                        }
+                }
+
+                while (true){
+                        month = readIntegerHelper("Month");
+                        if (month < 1 || month > 12){
+                                System.out.println("Invalid month. Please enter a valid month");
+                        }
+                        else{
+                                break;
+                        }
+                }
+
+                while (true){
+                        day = readIntegerHelper("Day");
+                        if (day < 1 || day > 31){
+                                System.out.println("Invalid day. Please enter a valid day");
+                        }
+                        else{
+                                break;
+                        }
+                }
+
+                while (true){
+                        hour = readIntegerHelper("hour");
+                        if (hour < 0 || hour > 23){
+                                System.out.println("Invalid hour. Please enter a valid hour");
+                        }
+                        else{
+                                break;
+                        }
+                }
+
+                while (true){
+                        minutes = readIntegerHelper("minutes");
+                        if (minutes < 0 || minutes > 59){
+                                System.out.println("Invalid minutes. Please enter a valid minutes");
+                        }
+                        else{
+                                break;
+                        }
+                }
+
+                return Integer.toString(year) + "-" + Integer.toString(month) + "-" + Integer.toString(day) + " " + Integer.toString(hour) + ":" + Integer.toString(minutes);
+        }
+
+
+
 
 	public static boolean getYesNoAnswer(){
 		String answer = "";
