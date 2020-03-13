@@ -142,6 +142,24 @@ record as a percentage)
 
 
 # Phase 3: Implementation/Requirement
+
+**Our Task :**
+
+● Develop a client application using the Java Database Connector (JDBC) for psql.
+
+● Use the client application to support specific functionality and queries for your online
+booking system.
+
+#### Compile and run 
+use code below to compile the program:
+```
+source ./compile.sh
+
+source ./run.sh flightDB 5432 user
+```
+
+### client application requirement
+
 ```
 • Add Plane: Ask the user for details of a plane and add it to the DB
 ```
