@@ -1,5 +1,5 @@
  # CS-166-Project 
-##**Description:**
+## Description:
  > In this project, we create model and build an airline management system. We use this
 system to track information about different airlines, the planes they own, the maintenance of
 those planes, the pilots they employ and the trips that the pilots make, as well as information
@@ -8,10 +8,10 @@ about the customers that use the airline services.
 
 
 ## Requirement Analysis
-```
-1. Given a flight number, get the flight’s schedule for the week
-	- A flight may be scheduled on multiple days in a week
-```
+
+ > 1. Given a flight number, get the flight’s schedule for the week
+	● A flight may be scheduled on multiple days in a week
+
 ```
 2. Given a flight and a date, get (1) the number of seats still available and (2) number of
 seats sold
