@@ -684,7 +684,8 @@ public class DBproject{
 
 				// Update reservation status to confirm
 				if (procceed){
-					query = String.format("UPDATE Reservation R SET R.status = 'C' WHERE R.rnum = %s", reservationNum);
+					query = String.format("UPDATE Reservation SET status = 'C' WHERE rnum = %s", reservationNum);
+					System.out.println(reservationNum);
 					sucessMessage = String.format("Successfully CONFIRMED resevation (%s) for flight %d ", reservationNum, flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);
 				}
@@ -952,7 +953,7 @@ public class DBproject{
 
 	public static void executeUpdateInsertQuery(String query, String sucessMessage, DBproject esql){
 		try {
-			//System.out.println(query);
+			System.out.println(query);
 			System.out.println(); 
 			esql.executeUpdate(query);
 			System.out.println(sucessMessage);
@@ -960,7 +961,7 @@ public class DBproject{
 		}
 		catch (Exception e){
 			System.out.println("Something went wrong, please try again!");
-			//System.err.println(e.getMessage());         
+			System.err.println(e.getMessage());         
 		}
 	}
 
