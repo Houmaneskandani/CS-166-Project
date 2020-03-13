@@ -150,44 +150,43 @@ record as a percentage)
 ● Use the client application to support specific functionality and queries for your online
 booking system.
 
-### Compile and run : 
+### Compile and Run : 
 Use code below to compile the program:
 ```
 source ./compile.sh
 
-source ./run.sh flightDB 5432 user
+source ./run.sh "Database Name" "Server port" "User name"
 ```
 
 ## Client Application Requirements:
 
+   #### Add Plane: Ask the user for details of a plane and add it to the DB
 
- > • Add Plane: Ask the user for details of a plane and add it to the DB
+   To implement this requirement, we ask the user to input various information for a new plane (id, make, model, year, and seats).
 
-    To implement this requirement, we ask the user to input various information for a new plane (id, make, model, year, and seats).
+   - To validate the id, we check if there is any row in the Plane table with the inputted id. If there is then we ask for a new id otherwise we continue.
 
-    - To validate the id, we check if there is any row in the Plane table with the inputted id. If there is then we ask for a new id otherwise we continue.
+   - To validate the make and model, we verify that inputted make and model are not a empty string or contain more than 32 characters
 
-    - To validate the make and model, we verify that inputted make and model are not a empty string or contain more than 32 characters
+   - To validate the year, we verify that inputted year is not less than 1970 or 2020
 
-    - To validate the year, we verify that inputted year is not less than 1970 or 2020
+   - To validate the number of seats we verify that inputted number is not less or equal to zero or is greater or equal to five-hundred
 
-    - To validate the number of seats we verify that inputted number is not less or equal to zero or is greater or equal to five-hundred
+   If all the inputs are valid, we use an INSERT statement to create a new  record containning the inputted information in the Plane table
 
-    If all the inputs are valid, we use an INSERT statement to create a new  record containning the inputted information in the Plane table
-
- > • Add Pilot: Ask the user for details of a pilot and add it to the DB
+   #### Add Pilot: Ask the user for details of a pilot and add it to the DB
   
-    To implement this requirement, we ask the user to input various information for a new pilot (pilotNumber, fullname, nationality).
+   To implement this requirement, we ask the user to input various information for a new pilot (pilotNumber, fullname, nationality).
 
-    - To validate the pilot number, we check if there is any row in the Pilot table with the inputted pilot number. If there is then we ask for a new pilot number otherwise we continue.
+   - To validate the pilot number, we check if there is any row in the Pilot table with the inputted pilot number. If there is then we ask for a new pilot number otherwise we continue.
 
-    - To validate the fullname, we verify that inputted fullname is not empty. 
+   - To validate the fullname, we verify that inputted fullname is not empty. 
 
-    - To validate the nationality, we verify that inputted nationality is not empty. 
-  
-    - If all the inputs are valid, we use an INSERT statement to create a new  record containning the inputted information in the pilot table
+   - To validate the nationality, we verify that inputted nationality is not empty. 
 
-   ### Add Flight: Ask the user for details of a flight and add it to the DB
+   - If all the inputs are valid, we use an INSERT statement to create a new  record containning the inputted information in the pilot table
+
+   #### Add Flight: Ask the user for details of a flight and add it to the DB
 
    To implement this requirement, we ask the user to input various information to create a new Flight, FlightInfo, and Schedule records.
 
@@ -203,20 +202,18 @@ source ./run.sh flightDB 5432 user
 
    If all the inputs are valid, then using the information gathered, we create new records in the Flight, Flight Info, and Schedule tables. We assume we had to create a new record in the Flight Info and Schedule tables althought it was not specified. Also, note for the last two tables mentioned we use random integes to generate their respective ids as we thought an user shouldn't need to input ids for them.
 
- > • Add Technician: Ask user for details of a technician and add it to the DB
+   #### Add Technician: Ask user for details of a technician and add it to the DB
 
-    To implement this requirement, we ask the user to input various information for a new Technician (technicianId, fullname).
+   To implement this requirement, we ask the user to input various information for a new Technician (technicianId, fullname).
 
-    - To validate the Technician id, we check if there is any row in the Technician table with the inputted Technician id. If there is then we ask for a new Technician number otherwise we continue.
+   - To validate the Technician id, we check if there is any row in the Technician table with the inputted Technician id. If there is then we ask for a new Technician number otherwise we continue.
 
-    - To validate the fullname, we verify that inputted fullname is not empty.
+   - To validate the fullname, we verify that inputted fullname is not empty.
 
-    - If all the inputs are valid, we use an INSERT statement to create a new record containning the inputted information in the Technician table
+   - If all the inputs are valid, we use an INSERT statement to create a new record containning the inputted information in the Technician table
 
 
- > • Book Flight: Given a customer and flight that he/she wants to book, determine the status
-of the reservation (Waitlisted/Confirmed/Reserved) and add the reservation to the database
-with appropriate status.
+   #### Book Flight: Given a customer and flight that he/she wants to book, determine the status of the reservation (Waitlisted/Confirmed/Reserved) and add the reservation to the database with appropriate status.
 
    To implement this requirement, we ask the user to input a customer id and a flight number. We perform the following validation:
 
@@ -242,8 +239,7 @@ with appropriate status.
    - If flight has open seats, we ask the user whether to confirm or reserve the flight for the customer and create a new reservation record with status of confirmed or reserved accordingly. 
    
 
- > • List number of available seats for a given flight: Given a flight number and a departure date,
-find the number of available seats in the flight.
+   #### List number of available seats for a given flight: Given a flight number and a departure date, find the number of available seats in the flight.
 
     To implement this requirement, we ask the user to input various information (flight number, departure date and time).
 
@@ -255,26 +251,22 @@ find the number of available seats in the flight.
 
 
 
+   #### List total number of repairs per plane in descending order: Return the list of planes in decreasing order of number of repairs that have been made on the planes.
 
- > • List total number of repairs per plane in descending order: Return the list of planes in de-
-creasing order of number of repairs that have been made on the planes.
+   To implement this requirement, we perform a SELECT query that joins the Plane and Repairs tables using the plane id. The query groups records by plane id and counts the number of repairs per each plane. At the end, the records are displayed to the user in desceding order of number of repairs per plane.
 
-    To implement this requirement, we perform a SELECT query that joins the Plane and Repairs tables using the plane id. The query groups records by plane id and counts the number of repairs per each plane. At the end, the records are displayed to the user in desceding order of number of repairs per plane.
+   #### List total number of repairs per year in ascending order: Return the years with the number of repairs made in those years in ascending order of number of repairs per year.
 
- > • List total number of repairs per year in ascending order: Return the years with the number of
-repairs made in those years in ascending order of number of repairs per year.
+   To implement this requirement, we perform a SELECT DISTINCT query on Repairs tables. The query groups records by repair date and counts the number of repairs per each year. At the end, the records are displayed to the user in Ascending order of number of repairs per year.
 
-    To implement this requirement, we perform a SELECT DISTINCT query on Repairs tables. The query groups records by repair date and counts the number of repairs per each year. At the end, the records are displayed to the user in Ascending order of number of repairs per year.
+   #### Find total number of passengers with a given status: For a given flight and passenger status,return the number of passengers with the given status.
 
- > • Find total number of passengers with a given status: For a given flight and passenger status,
-return the number of passengers with the given status.
+   To implement this requirement, we ask the user to provide a flight number and passenger status (W, C, R). We perform the following validation:
 
-      To implement this requirement, we ask the user to provide a flight number and passenger status (W, C, R). We perform the following validation:
+   - To validate the flight number, we check if there is any record in the Flight table with the inputted flight number. If there is no such record then we ask for a new flight number otherwise we continue.
 
-      - To validate the flight number, we check if there is any record in the Flight table with the inputted flight number. If there is no such record then we ask for a new flight number otherwise we continue.
+   - We ask the user to input W to select waitlisted passengers, C  to select confirmed passengers, and R for reserved passengers
+   
+   - To validate the passenger status, we check whether the input is W, C, or R. If it is none of them, we ask the user to enter a valid choice
 
-      - We ask the user to input W to select waitlisted passengers, C  to select confirmed passengers, and R for reserved passengers
-     
-      - To validate the passenger status, we check whether the input is W, C, or R. If it is none of them, we ask the user to enter a valid choice
-
-      After all inputs is validate, we perform a SELECT query that counts the number of reservation records that have the inputted flight number and passenger status in their fid and status fields respectively
+   After all inputs is validate, we perform a SELECT query that counts the number of reservation records that have the inputted flight number and passenger status in their fid and status fields respectively
