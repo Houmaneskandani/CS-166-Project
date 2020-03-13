@@ -564,16 +564,15 @@ public class DBproject{
 		sucessMessage = String.format("Flight (%d) successfully created", flightNumber);
 		executeUpdateInsertQuery(query, sucessMessage, esql);
 
-		// TO DO: CREATE RANDOM Ids
 		// Creates flight Info
-		//int flightInfoId = generateValidId();
-		query = String.format("INSERT INTO FlightInfo VALUES(DEFAULT, %d, %d, %d)",  flightNumber, pilotId, planeId);
+		int flightInfoId = generateValidId();
+		query = String.format("INSERT INTO FlightInfo VALUES(%d, %d, %d, %d)", flightInfoId, flightNumber, pilotId, planeId);
 		sucessMessage = "Flight Information sucessfully saved";
 		executeUpdateInsertQuery(query, sucessMessage, esql);
 
-		//int scheduleId = generateValidId()
+		int scheduleId = generateValidId();
 		// Creates Schedule
-		query = String.format("INSERT INTO Schedule VALUES(DEFAULT, %d, '%s', '%s')",  flightNumber, departureDate, arrivalDate);
+		query = String.format("INSERT INTO Schedule VALUES(%d, %d, '%s', '%s')", scheduleId, flightNumber, departureDate, arrivalDate);
 		sucessMessage = "Flight sucessfully scheduled";
 		executeUpdateInsertQuery(query, sucessMessage, esql);
 	}
@@ -679,7 +678,7 @@ public class DBproject{
 			}// If resereation status is R
 			else if (ReservationRecord.get(0).get(3) == "R"){
 
-				System.out.println("Customer is reserved for Flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
+				System.out.println("Customer is reserved for flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
 				System.out.println("Woud you like to change customer's reservation status to Confirmed? (Y/N)");
 				procceed = getYesNoAnswer();
 
@@ -697,6 +696,7 @@ public class DBproject{
 			else {
 				// Display confirmation
 				System.out.println("Customer is confirmed for Flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
+				System.out.println("No further action necessary");
 			}
 		} // If there is no reservation
 		else{
@@ -706,9 +706,12 @@ public class DBproject{
 				procceed = getYesNoAnswer();
 				if (procceed){
 					// Crates a reservation with W status
-					query = String.format("INSERT INTO Reservation (7585678, %d, %d, 'W')", customerId, flightNumber); 
-					sucessMessage = String.format("Sucessfully waitlisted customer for Flight - %d", flightNumber);
+					query = String.format("INSERT INTO Reservation (%d, %d, %d, 'W')", generateValidId(), customerId, flightNumber); 
+					sucessMessage = String.format("Sucessfully waitlisted customer for flight - %d", flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);
+				}
+				else {
+					System.out.println(String.format("Customer was not waitlisted for flight - %d", flightNumber));
 				}
 			}
 			else {
@@ -735,14 +738,13 @@ public class DBproject{
 					}
 				}
 				scanner.close();
-				// TO DO: CREATE RANDOM IDs
 				if (confirmed){
-					query = String.format("INSERT INTO Reservation (24657, %d, %d, 'C')", customerId, flightNumber); 
+					query = String.format("INSERT INTO Reservation (%d, %d, %d, 'C')", generateValidId() ,customerId, flightNumber); 
 					sucessMessage = String.format("Customer confirmed for flight %d", flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);					
 				}
 				else {
-					query = String.format("INSERT INTO Reservation (32444, %d, %d, 'R')", customerId, flightNumber); 
+					query = String.format("INSERT INTO Reservation (%d, %d, %d, 'R')",  generateValidId(), customerId, flightNumber); 
 					sucessMessage = String.format("Customer reserved for flight: %s", flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);	
 				}
@@ -1051,5 +1053,12 @@ public class DBproject{
 		numOfSeatsInPlane = executeSelectQueryGetResults(query, esql).get(0).get(0);
 
 		return Integer.parseInt(numOfSeatsInPlane) <= Integer.parseInt(numOfTicketsSold);
+	}
+
+	public static int generateValidId(){
+		// create instance of Random class 
+        Random rand = new Random(); 
+        // Generate random integers in range 10000 to 100000
+        return rand.nextInt(90000) + 10000;
 	}
 }
