@@ -240,7 +240,10 @@ creasing order of number of repairs that have been made on the planes.
  > • List total number of repairs per year in ascending order: Return the years with the number of
 repairs made in those years in ascending order of number of repairs per year.
 
-   - To implement this requirement, we perform a SELECT DISTINCT query on Repairs tables. The query groups records by repair date and counts the number of repairs per each year. At the end, the records are displayed to the user in Ascending order of number of repairs per year.
+    To implement this requirement
+
+    -  we perform a SELECT DISTINCT query on Repairs tables. The query groups records by repair date and counts the number of repairs per each year. At the end, the records are displayed to the user in Ascending order of number of repairs per year.
+
 
  > • Find total number of passengers with a given status: For a given flight and passenger status,
 return the number of passengers with the given status.
