@@ -107,7 +107,26 @@ record as a percentage)
 
 # Phase 2: Relational Schema Design
 
-<img src="Phase2/image1.png " width ="900" >
+#### Assumptions:
+
+ > - The ID field of Customers is a string of 11 characters
+ > - The ID field of the Pilot entity is its primary key
+ > - The ID field of the Plane entity is its primary key
+ > - The ID field of the Technician entity is its primary key
+ > - We assume that the attribute ID for the following entities is unique:
+```
+Plane (Plane_ID) 
+Technician(Tech_ID)
+Pilot(Pilot_ID)
+Flight(flight_num)
+Customer(Customer_ID)
+```
+ > - Changed the name of the ID attribute of repair_request entity to repair_request_ID
+ > - In the repairs entity, we assume that the type of the ‘code’ attribute is CHAR(40) in the repairs entity.
+ > - For entities, Waitlisted, Confirmed, Reserved we added boolean attribute W_status, C_status, Re_status which shows the status of each customer who is going to reserve a  ticket.
+ > - We store all number and ID fields(i.e. flight_num, Rnum, Plane ID, etc) as CHAR(11). We assume these fields will not be used for any mathematical operation; therefore, there is no point in storing them as integers. If needed, these fields could store more characters, but we assume eleven is enough.
+
+
 
 
 # Phase 3: Implementation/Requirement
