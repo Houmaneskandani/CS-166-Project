@@ -718,12 +718,12 @@ public class DBproject{
 					confirmed = askForConfirmationOrReservation();
 					if (confirmed){
 						query = String.format("UPDATE Reservation SET status = 'C' where rnum = %s", reservationNum); 
-						sucessMessage = String.format("Sucessfully changed customer's status to CONFIRMED for flight (%d)", flightNumber);
+						sucessMessage = String.format("Successfully changed customer's status to CONFIRMED for flight (%d)", flightNumber);
 						executeUpdateInsertQuery(query, sucessMessage, esql);					
 					}
 					else {
 						query = String.format("UPDATE Reservation SET status = 'R' where rnum = %s", reservationNum); 
-						sucessMessage = String.format("Sucessfully changed customer's status to RESERVED for flight (%d)", flightNumber);
+						sucessMessage = String.format("Successfully changed customer's status to RESERVED for flight (%d)", flightNumber);
 						executeUpdateInsertQuery(query, sucessMessage, esql);	
 					}
 				}
@@ -741,12 +741,12 @@ public class DBproject{
 				}
 				else {
 					// User still reserved
-					System.out.println("Customer is still RESERVED for flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
+					System.out.println("\nCustomer is still RESERVED for flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
 				}
 			} // If reservation status is C
 			else {
 				// Display confirmation
-				System.out.println("Customer is CONFIRMED for flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
+				System.out.println("\nCustomer is CONFIRMED for flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
 				System.out.println("No further action necessary");
 			}
 		} // If there is no reservation
@@ -758,23 +758,23 @@ public class DBproject{
 				if (procceed){
 					// Crates a reservation with W status
 					query = String.format("INSERT INTO Reservation VALUES (%d, %d, %d, 'W')", generateValidId(), customerId, flightNumber); 
-					sucessMessage = String.format("Sucessfully WAITLISTED customer for flight (%d)", flightNumber);
+					sucessMessage = String.format("Successfully WAITLISTED customer for flight (%d)", flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);
 				}
 				else {
-					System.out.println(String.format("Customer was not WAITLISTED for flight (%d)", flightNumber));
+					System.out.println(String.format("\nCustomer was not WAITLISTED for flight (%d)", flightNumber));
 				}
 			}
 			else {
 				confirmed = askForConfirmationOrReservation();
 				if (confirmed){
 					query = String.format("INSERT INTO Reservation VALUES (%d, %d, %d, 'C')", generateValidId() ,customerId, flightNumber); 
-					sucessMessage = String.format("Sucessfully CONFIRMED customer for flight (%d)", flightNumber);
+					sucessMessage = String.format("Successfully CONFIRMED customer for flight (%d)", flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);					
 				}
 				else {
 					query = String.format("INSERT INTO Reservation VALUES (%d, %d, %d, 'R')",  generateValidId(), customerId, flightNumber); 
-					sucessMessage = String.format("Sucessfully RESERVED customer for flight (%d)", flightNumber);
+					sucessMessage = String.format("Successfully RESERVED customer for flight (%d)", flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);	
 				}
 			}
@@ -832,7 +832,7 @@ public class DBproject{
                 //System.out.println(String.format("%d", totalNumSeats));
 
 int ArowCount = esql.executeQueryAndPrintResult("SELECT seats FROM Plane  WHERE id = 2 ;");
-                                      //  sucessMessage = String.format("Sucessfully RESERVED customer for flight (%d)");
+                                      //  sucessMessage = String.format("Successfully RESERVED customer for flight (%d)");
                                        // executeUpdateInsertQuery(query, sucessMessage, esql);
 System.out.println(String.format("%d", ArowCount));
 		}
