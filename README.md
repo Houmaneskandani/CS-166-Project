@@ -75,7 +75,7 @@ record as a percentage)
 
 # Phase 1: ER Design
 
-<img src="Phase1/IMAGE/image.png " width ="100" >
+<img src="Phase1/IMAGE/image.png " width ="900" >
 
 
 # Phase 2: Relational Schema Design
