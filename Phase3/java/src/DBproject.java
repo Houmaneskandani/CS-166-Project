@@ -567,13 +567,13 @@ public class DBproject{
 		// Creates flight Info
 		int flightInfoId = generateValidId();
 		query = String.format("INSERT INTO FlightInfo VALUES(%d, %d, %d, %d)", flightInfoId, flightNumber, pilotId, planeId);
-		sucessMessage = "Flight Information sucessfully saved";
+		sucessMessage = "Flight Information Successfully saved";
 		executeUpdateInsertQuery(query, sucessMessage, esql);
 
 		int scheduleId = generateValidId();
 		// Creates Schedule
 		query = String.format("INSERT INTO Schedule VALUES(%d, %d, '%s', '%s')", scheduleId, flightNumber, departureDate, arrivalDate);
-		sucessMessage = "Flight sucessfully scheduled";
+		sucessMessage = "Flight Successfully scheduled";
 		executeUpdateInsertQuery(query, sucessMessage, esql);
 	}
 
@@ -706,7 +706,7 @@ public class DBproject{
 				if (procceed){
 					// Crates a reservation with W status
 					query = String.format("INSERT INTO Reservation (%d, %d, %d, 'W')", generateValidId(), customerId, flightNumber); 
-					sucessMessage = String.format("Sucessfully WAITLISTED customer for flight (%d)", flightNumber);
+					sucessMessage = String.format("Successfully WAITLISTED customer for flight (%d)", flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);
 				}
 				else {
@@ -736,12 +736,12 @@ public class DBproject{
 				}
 				if (confirmed){
 					query = String.format("INSERT INTO Reservation (%d, %d, %d, 'C')", generateValidId() ,customerId, flightNumber); 
-					sucessMessage = String.format("Sucessfully CONFIRMED customer for flight (%d)", flightNumber);
+					sucessMessage = String.format("Successfully CONFIRMED customer for flight (%d);", flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);					
 				}
 				else {
 					query = String.format("INSERT INTO Reservation (%d, %d, %d, 'R')",  generateValidId(), customerId, flightNumber); 
-					sucessMessage = String.format("Sucessfully RESERVED customer for flight (%d)", flightNumber);
+					sucessMessage = String.format("Successfully RESERVED customer for flight (%d);", flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);	
 				}
 			}
