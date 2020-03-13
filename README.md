@@ -75,6 +75,12 @@ record as a percentage)
 
 # Phase 1: ER Design
 
+**Our Task :**
+● That you state them clearly in the documentation for this phase.
+
+● They do not contradict the system requirements analysis we provide.
+
+
 <img src="Phase1/IMAGE/image.png " width ="900" >
 
 
@@ -107,9 +113,9 @@ record as a percentage)
 
 # Phase 2: Relational Schema Design
 
-**Task**
+**Our Task :**
 
-Translate the provided ER design to a PostgreSQL relational database schema.
+● Translate the provided ER design to a PostgreSQL relational database schema.
 
 
 <img src="Phase2/image3.png " width ="600" >
