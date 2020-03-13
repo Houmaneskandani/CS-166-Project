@@ -176,7 +176,16 @@ source ./run.sh flightDB 5432 user
     If all the inputs are valid, we use an INSERT statement to create a new  record containning the inputted information in the Plane table
 
  > • Add Pilot: Ask the user for details of a pilot and add it to the DB
+  
+    To implement this requirement, we ask the user to input various information for a new pilot (pilotNumber, fullname, nationality).
 
+    - To validate the pilot number, we check if there is any row in the Pilot table with the inputted pilot number. If there is then we ask for a new pilot number otherwise we continue.
+
+    - To validate the fullname, we verify that inputted fullname is not empty. 
+
+    - To validate the nationality, we verify that inputted nationality is not empty. 
+  
+    - If all the inputs are valid, we use an INSERT statement to create a new  record containning the inputted information in the pilot table
 
  > • Add Flight: Ask the user for details of a flight and add it to the DB
 
@@ -196,6 +205,13 @@ source ./run.sh flightDB 5432 user
 
  > • Add Technician: Ask user for details of a technician and add it to the DB
 
+    To implement this requirement, we ask the user to input various information for a new Technician (technicianId, fullname).
+
+    - To validate the Technician id, we check if there is any row in the Technician table with the inputted Technician id. If there is then we ask for a new Technician number otherwise we continue.
+
+    - To validate the fullname, we verify that inputted fullname is not empty.
+
+    - If all the inputs are valid, we use an INSERT statement to create a new record containning the inputted information in the Technician table
 
  > • Book Flight: Given a customer and flight that he/she wants to book, determine the status
 of the reservation (Waitlisted/Confirmed/Reserved) and add the reservation to the database
@@ -204,6 +220,16 @@ with appropriate status.
 
  > • List number of available seats for a given flight: Given a flight number and a departure date,
 find the number of available seats in the flight.
+
+    To implement this requirement, we ask the user to input various information (flight number, departure date and time).
+
+    - To validate the flight number, we check if there is exist row in the Flight table with the inputted flight number. If there is no flight number then it will return no flight availble otherwise it continue.
+
+    - To validate the departure date and time, we verify that inputted date and time is exist in our Flight table if not it will return no flight availble otherwise it continue.
+
+    ...
+
+
 
 
  > • List total number of repairs per plane in descending order: Return the list of planes in de-
@@ -214,6 +240,7 @@ creasing order of number of repairs that have been made on the planes.
  > • List total number of repairs per year in ascending order: Return the years with the number of
 repairs made in those years in ascending order of number of repairs per year.
 
+   - To implement this requirement, we perform a SELECT DISTINCT query on Repairs tables. The query groups records by repair date and counts the number of repairs per each year. At the end, the records are displayed to the user in Ascending order of number of repairs per year.
 
  > • Find total number of passengers with a given status: For a given flight and passenger status,
 return the number of passengers with the given status.
