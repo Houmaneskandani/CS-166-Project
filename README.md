@@ -7,10 +7,10 @@ about the customers that use the airline services.
 
 
 
-# Requirement Analysis
+## Requirement Analysis
 ```
 1. Given a flight number, get the flight’s schedule for the week
-	● A flight may be scheduled on multiple days in a week
+	- A flight may be scheduled on multiple days in a week
 ```
 ```
 2. Given a flight and a date, get (1) the number of seats still available and (2) number of
