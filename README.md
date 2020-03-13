@@ -151,7 +151,7 @@ record as a percentage)
 booking system.
 
 ### Compile and run : 
-use code below to compile the program:
+Use code below to compile the program:
 ```
 source ./compile.sh
 
@@ -162,8 +162,9 @@ source ./run.sh flightDB 5432 user
 
 
  > • Add Plane: Ask the user for details of a plane and add it to the DB
+
     To implement this requirement, we ask the user to input various information for a new plane (id, make, model, year, and seats).
-    
+
     - To validate the id, we check if there is any row in the Plane table with the inputted id. If there is then we ask for a new id otherwise we continue.
 
     - To validate the make and model, we verify that inputted make and model are not a empty string or contain more than 32 characters
@@ -173,11 +174,25 @@ source ./run.sh flightDB 5432 user
     - To validate the number of seats we verify that inputted number is not less or equal to zero or is greater or equal to five-hundred
 
     If all the inputs are valid, we use an INSERT statement to create a new  record containning the inputted information in the Plane table
+
  > • Add Pilot: Ask the user for details of a pilot and add it to the DB
 
 
  > • Add Flight: Ask the user for details of a flight and add it to the DB
 
+    To implement this requirement, we ask the user to input various information to create a new Flight, FlightInfo, and Schedule records 
+
+    - To validate the flight number, we check if there is any row in the Flight table with the inputted flight number. If there is then we ask for a new flight number otherwise we continue.
+
+    - To validate the cost of the flight, we verify that inputted cost is not less than or equal to 0
+
+    - To validate the number of tickets sold and the number of stops, we verify that inputted numbers are not less than 0
+
+    - To validate the departure and arrival date, we ask the user to input the day, month, and year of the date, validating each one of those individually. Using the information gathered, we construct a string to represent the respective date in the format YYYY-MM-DD (date format that the database exepcts)
+
+    - To validate the plane and pilot ids, we verify that each id belongs to a row in a table (Plane or Pilot respectively). Note, we ask the user to input the pilot and plane ids because we need them to create a new row in the Flight Info table
+
+    If all the inputs are valid, then using the information gathered, we create new records in the Flight, Flight Info, and Schedule tables. We assume we had to create a new record in the Flight Info and Schedule tables althought it was not specified. Also, note for the last two tables mentioned we use random integes to generate their respective ids as we thought an user shouldn't need to input ids for them.
 
  > • Add Technician: Ask user for details of a technician and add it to the DB
 

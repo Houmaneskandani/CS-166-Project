@@ -1036,11 +1036,13 @@ public class DBproject{
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 		
 		while (true){
-			year = readIntegerHelper("Year");
-			if (year < currentYear || year > currentYear + 2){
-				System.out.println("Invalid year. Please enter a valid year");
+			day = readIntegerHelper("Day");
+			if (day < 1 || day > 31){
+				System.out.println("*************************************");
+				System.out.println("Invalid day. Please enter a valid day");
+				System.out.println("*************************************\n");
 			}
-			else {
+			else{
 				break;
 			}
 		}
@@ -1048,7 +1050,9 @@ public class DBproject{
 		while (true){
 			month = readIntegerHelper("Month");
 			if (month < 1 || month > 12){
+				System.out.println("*****************************************");
 				System.out.println("Invalid month. Please enter a valid month");
+				System.out.println("*****************************************\n");
 			}
 			else{
 				break;
@@ -1056,15 +1060,18 @@ public class DBproject{
 		}
 
 		while (true){
-			day = readIntegerHelper("Day");
-			if (day < 1 || day > 31){
-				System.out.println("Invalid day. Please enter a valid day");
+			year = readIntegerHelper("Year");
+			if (year < currentYear || year > currentYear + 2){
+				System.out.println("***************************************");
+				System.out.println("Invalid year. Please enter a valid year");
+				System.out.println("***************************************\n");
+
 			}
-			else{
+			else {
 				break;
 			}
 		}
-
+		
 		return Integer.toString(year) + "-" + Integer.toString(month) + "-" + Integer.toString(day); 
 	}
 
