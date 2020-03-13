@@ -245,9 +245,9 @@ source ./run.sh "Database Name" "Server port" "User name"
 
    - To validate the flight number, we check if there is exist row in the Flight table with the inputted flight number. If there is no flight number then it will return no flight availble otherwise it continue.
 
-   - To validate the departure date and time, we verify that inputted date and time is exist in our Flight table if not it will return no flight availble otherwise it continue.
+   - To validate the departure date and time, we verify that inputted date and time is in ccorrect range otherwise will print error and also checks if it is exist in our Flight table if not it will return no flight availble otherwise it continue.
 
-   ...
+   - To find the actual number of availble seats, we find the total seats which the flight could have and the number of booked seats and subtract them to get the result of availble seats.
 
 
 
