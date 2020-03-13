@@ -150,7 +150,7 @@ record as a percentage)
 ● Use the client application to support specific functionality and queries for your online
 booking system.
 
-### Compile and run 
+### Compile and run : 
 use code below to compile the program:
 ```
 source ./compile.sh
@@ -158,7 +158,7 @@ source ./compile.sh
 source ./run.sh flightDB 5432 user
 ```
 
-### client application requirement
+## Client application requirement :
 
 
  > • Add Plane: Ask the user for details of a plane and add it to the DB
