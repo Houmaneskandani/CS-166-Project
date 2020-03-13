@@ -169,7 +169,7 @@ source ./run.sh "Database Name" "Server port" "User name"
 
    - To validate the model, we verify that inputted model is not an empty string or contains more than 64 characters
 
-   - To validate the year, we verify that inputted year is not less than 1970 or 2020
+   - To validate the year, we verify that inputted year is not less than 1970 or 2020. We assume by age the specification refer to the year the plane was built
 
    - To validate the number of seats we verify that inputted number is not less or equal to zero or is greater or equal to five-hundred
 
