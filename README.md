@@ -76,10 +76,8 @@ record as a percentage)
 # Phase 1: ER Design
 
 **Our Task :**
-● That you state them clearly in the documentation for this phase.
 
-● They do not contradict the system requirements analysis we provide.
-
+● Design a logical model of your database using the ER-model with provided requirement.
 
 <img src="Phase1/IMAGE/image.png " width ="900" >
 
