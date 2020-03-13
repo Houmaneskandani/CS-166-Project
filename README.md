@@ -107,7 +107,7 @@ record as a percentage)
 
 # Phase 2: Relational Schema Design
 
-<img src="Phase2/image2.pdf " width ="900" >
+<img src="Phase2/image1.png " width ="900" >
 
 
 # Phase 3: Implementation/Requirement
