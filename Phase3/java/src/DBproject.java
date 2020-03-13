@@ -795,7 +795,7 @@ public class DBproject{
                 String departDate ="";
                 int totalAvailableSeats = 0;
                 int totalNumBooked = 0;
-                int totalNumSeats = 0;
+             //   int totalNumSeats = 0;
 		while(true){
 			flightNum = readIntegerHelper("flight number");
 			rowCount = executeSelectQuery(String.format("SELECT * FROM Flight F WHERE F.fnum = %d;", flightNum), esql);
@@ -805,9 +805,9 @@ public class DBproject{
 			else {
 				break;
 			}
-	    }
-	
-			// check the depart date and time
+	    
+		}	
+/*			// check the depart date and time
 			departDate = constructDateInput("Departure Date and time");
 			System.out.println(String.format("%s", departDate));
 			// check if there is departure date and time exist
@@ -820,8 +820,8 @@ public class DBproject{
                                 break;
                         }
 
-	
-
+	      }
+*/
 /*
 		String sucessMessage = "";
 		try{
@@ -842,7 +842,7 @@ System.out.println(String.format("%d", ArowCount));
                 }
 */
 
- 
+ /*
          	try{
 			// total  number of seats 
 			query = String.format("SELECT P.seats FROM Plane P, FlightInfo FI, Flight F  WHERE FI.flight_id = F.fnum AND F.fnum = %d AND F.actual_departure_date ='%s' AND FI.plane_id = P.id;",flightNum, departDate);
@@ -868,6 +868,13 @@ System.out.println(String.format("%d", ArowCount));
                         System.out.println("Something went wrong. Please try again!");
                         System.err.println(e.getMessage());
 		}
+*/
+                        query = String.format("SELECT P.seats FROM Plane P, FlightInfo FI, Flight F  WHERE FI.flight_id = F.fnum AND F.fnum = %d AND F.actual_departure_date ='%s' AND FI.plane_id = P.id;",flightNum, departDate);
+                        String totalNumSeats = executeSelectQueryGetResults(query, esql).get(0).get(0);
+			System.out.println(String.format("\nNumber of seats %s ",totalNumSeats));	
+
+
+
 	}
 
 //=====================================================================================================================================================================
