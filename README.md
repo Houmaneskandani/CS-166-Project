@@ -114,13 +114,13 @@ record as a percentage)
  > - The ID field of the Plane entity is its primary key
  > - The ID field of the Technician entity is its primary key
  > - We assume that the attribute ID for the following entities is unique:
-```
-Plane (Plane_ID) 
-Technician(Tech_ID)
-Pilot(Pilot_ID)
-Flight(flight_num)
-Customer(Customer_ID)
-```
+
+     -  Plane (Plane_ID) 
+     -  Technician(Tech_ID)
+     -  Pilot(Pilot_ID)
+     -  Flight(flight_num)
+     -  Customer(Customer_ID)
+
  > - Changed the name of the ID attribute of repair_request entity to repair_request_ID
  > - In the repairs entity, we assume that the type of the ‘code’ attribute is CHAR(40) in the repairs entity.
  > - For entities, Waitlisted, Confirmed, Reserved we added boolean attribute W_status, C_status, Re_status which shows the status of each customer who is going to reserve a  ticket.
