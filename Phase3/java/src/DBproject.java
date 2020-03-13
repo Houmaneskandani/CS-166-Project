@@ -819,16 +819,18 @@ public class DBproject{
 //=========================================================================================================================================================================
 		// 
 	public static void ListTotalNumberOfRepairsPerYear(DBproject esql) {//8
-		// List total number of repairs per year in ascending order: Return the years with the number of
-		// repairs made in those years in ascending order of number of repairs per year.
-	        List<List<String>> repairsRecord = new ArrayList<List<String>>();	
-		repairsRecord = executeSelectQueryGetResults(String.format("SELECT DISTINCT repair_date, COUNT(rid) AS NumRepairsPerYear FROM Repairs GROUP BY repair_date ORDER BY COUNT(rid) ASC;"), esql);
-		// if no repair made 
-		if ( repairsRecord.isEmpty()){
-			System.out.println(" No records ");	
-		} 			
+			
+		try{
+			int rowCount = esql.executeQueryAndPrintResult("SELECT DISTINCT repair_date, COUNT(rid) AS NumRepairsPerYear FROM Repairs GROUP BY repair_date ORDER BY COUNT(rid) ASC;");
+                        if ( rowCount == 0){
+                	        System.out.println(" No records ");     
+              	        }        
+		}
+		catch (Exception e){
+                        System.out.println("Something went wrong. Please try again!");
+                        System.err.println(e.getMessage());
+                 }
 	}
-
 
 //=========================================================================================================================================================================
 	
