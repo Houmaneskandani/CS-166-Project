@@ -348,14 +348,14 @@ public class DBproject{
 		// Validate Model
 		while (true){
 			model = readStringHelper("Model");
-			if (make.length() == 0){
+			if (model.length() == 0){
 				System.out.println("*********************************");
-				System.out.println("Please enter a make for the plane");
+				System.out.println("Please enter a model for the plane");
 				System.out.println("*********************************\n");
 			}
-			else if (make.length() > 32){
+			else if (model.length() > 64){
 				System.out.println("********************************************************");
-				System.out.println("The make entered is too long. Plase enter a shorter make");
+				System.out.println("The model entered is too long. Plase enter a shorter model");
 				System.out.println("********************************************************\n");
 			}
 			else {
@@ -385,7 +385,7 @@ public class DBproject{
 			// if number of seats is less than 0 or greater than 500 then it is invalid so keep looping otherwise break
 			if (seats <= 0 || seats >= 500){
 				System.out.println("********************************************************");
-				System.out.println("Invalid input. Number of seats must be between 0 and 500");
+				System.out.println("Invalid input. Number of seats must be between 1 and 499");
 				System.out.println("*********************************************************\n");
 			}
 			else {
@@ -414,7 +414,9 @@ public class DBproject{
 			pilotNumber = readIntegerHelper("Pilot number");
 			rowCount = executeSelectQuery(String.format("SELECT * FROM Pilot P WHERE P.id = %d;", pilotNumber), esql); 
 			if (rowCount > 0){
+				System.out.println("**************************************************************");
 				System.out.println("Pilot number already exists. Please enter a valid Pilot number");
+				System.out.println("**************************************************************\n");
 			}
 			else {
 				break;
@@ -425,7 +427,9 @@ public class DBproject{
 		while (true){
 			fullname = readStringHelper("fullname");
 			if (fullname.length() == 0){
+				System.out.println("*******************************************");
 				System.out.println("Invalid name. Please enter correct fullname");
+				System.out.println("********************************************\n");
 			}
 			else {
 				break;
@@ -436,7 +440,9 @@ public class DBproject{
 		while(true){
 			nationality = readStringHelper("nationality");
 			if(nationality.length() == 0){
+				System.out.println("*****************************************************");
 				System.out.println("Invalid nationality. Please enter correct nationality");
+				System.out.println("*****************************************************\n");
 			}
 			else {
 				break;
@@ -621,7 +627,9 @@ public class DBproject{
 			technicianId = readIntegerHelper("Technician id");
 			rowCount = executeSelectQuery(String.format("SELECT * FROM Technician T WHERE T.id = %d;", technicianId), esql);
 	                if (rowCount > 0){
-            	              System.out.println("Technician id already exists. Please enter a valid technician id");
+							  System.out.println("****************************************************************");
+							  System.out.println("Technician id already exists. Please enter a valid technician id");
+							  System.out.println("****************************************************************\n");
            		}
             		else {
               		 	break;
@@ -632,7 +640,9 @@ public class DBproject{
 		while (true){
 			fullname = readStringHelper("fullname"); 
 			if (fullname.length() == 0){
+				System.out.println("*******************************************");
 				System.out.println("Invalid name. Please enter correct fullname");
+				System.out.println("*******************************************\n");
 			}
 			else {
 				break;
@@ -718,12 +728,12 @@ public class DBproject{
 					confirmed = askForConfirmationOrReservation();
 					if (confirmed){
 						query = String.format("UPDATE Reservation SET status = 'C' where rnum = %s", reservationNum); 
-						sucessMessage = String.format("Sucessfully changed customer's status to CONFIRMED for flight (%d)", flightNumber);
+						sucessMessage = String.format("Successfully changed customer's status to CONFIRMED for flight (%d)", flightNumber);
 						executeUpdateInsertQuery(query, sucessMessage, esql);					
 					}
 					else {
 						query = String.format("UPDATE Reservation SET status = 'R' where rnum = %s", reservationNum); 
-						sucessMessage = String.format("Sucessfully changed customer's status to RESERVED for flight (%d)", flightNumber);
+						sucessMessage = String.format("Successfully changed customer's status to RESERVED for flight (%d)", flightNumber);
 						executeUpdateInsertQuery(query, sucessMessage, esql);	
 					}
 				}
@@ -741,12 +751,12 @@ public class DBproject{
 				}
 				else {
 					// User still reserved
-					System.out.println("Customer is still RESERVED for flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
+					System.out.println("\nCustomer is still RESERVED for flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
 				}
 			} // If reservation status is C
 			else {
 				// Display confirmation
-				System.out.println("Customer is CONFIRMED for flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
+				System.out.println("\nCustomer is CONFIRMED for flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
 				System.out.println("No further action necessary");
 			}
 		} // If there is no reservation
@@ -758,23 +768,23 @@ public class DBproject{
 				if (procceed){
 					// Crates a reservation with W status
 					query = String.format("INSERT INTO Reservation VALUES (%d, %d, %d, 'W')", generateValidId(), customerId, flightNumber); 
-					sucessMessage = String.format("Sucessfully WAITLISTED customer for flight (%d)", flightNumber);
+					sucessMessage = String.format("Successfully WAITLISTED customer for flight (%d)", flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);
 				}
 				else {
-					System.out.println(String.format("Customer was not WAITLISTED for flight (%d)", flightNumber));
+					System.out.println(String.format("\nCustomer was not WAITLISTED for flight (%d)", flightNumber));
 				}
 			}
 			else {
 				confirmed = askForConfirmationOrReservation();
 				if (confirmed){
 					query = String.format("INSERT INTO Reservation VALUES (%d, %d, %d, 'C')", generateValidId() ,customerId, flightNumber); 
-					sucessMessage = String.format("Sucessfully CONFIRMED customer for flight (%d)", flightNumber);
+					sucessMessage = String.format("Successfully CONFIRMED customer for flight (%d)", flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);					
 				}
 				else {
 					query = String.format("INSERT INTO Reservation VALUES (%d, %d, %d, 'R')",  generateValidId(), customerId, flightNumber); 
-					sucessMessage = String.format("Sucessfully RESERVED customer for flight (%d)", flightNumber);
+					sucessMessage = String.format("Successfully RESERVED customer for flight (%d)", flightNumber);
 					executeUpdateInsertQuery(query, sucessMessage, esql);	
 				}
 			}
@@ -800,7 +810,9 @@ public class DBproject{
 			flightNum = readIntegerHelper("flight number");
 			rowCount = executeSelectQuery(String.format("SELECT * FROM Flight F WHERE F.fnum = %d;", flightNum), esql);
 			if (rowCount == 0){
+				System.out.println("****************************************************************");
 				System.out.println("There is no flight available. Please enter a valid flight number");
+				System.out.println("****************************************************************\n");
 			}
 			else {
 				break;
@@ -832,7 +844,7 @@ public class DBproject{
                 //System.out.println(String.format("%d", totalNumSeats));
 
 int ArowCount = esql.executeQueryAndPrintResult("SELECT seats FROM Plane  WHERE id = 2 ;");
-                                      //  sucessMessage = String.format("Sucessfully RESERVED customer for flight (%d)");
+                                      //  sucessMessage = String.format("Successfully RESERVED customer for flight (%d)");
                                        // executeUpdateInsertQuery(query, sucessMessage, esql);
 System.out.println(String.format("%d", ArowCount));
 		}
@@ -909,7 +921,9 @@ System.out.println(String.format("%d", ArowCount));
               	        }        
 		}
 		catch (Exception e){
-                        System.out.println("Something went wrong. Please try again!");
+						System.out.println("***************************************");
+						System.out.println("Something went wrong. Please try again!");
+						System.out.println("***************************************\n");
                         System.err.println(e.getMessage());
                  }
 	}
@@ -1044,7 +1058,7 @@ System.out.println(String.format("%d", ArowCount));
 			System.out.println("Something went wrong, please try again!");
 			System.out.println("***************************************\n");
 
-			System.err.println(e.getMessage());         
+			//System.err.println(e.getMessage());         
 		}
 	}
 
@@ -1128,7 +1142,9 @@ System.out.println(String.format("%d", ArowCount));
                 while (true){
                         year = readIntegerHelper("Year");
                         if ( year > currentYear){
-                                System.out.println("Invalid year. Please enter a valid year");
+								System.out.println("***************************************");
+								System.out.println("Invalid year. Please enter a valid year");
+								System.out.println("***************************************\n");
                         }
                         else {
                                 break;
@@ -1138,7 +1154,9 @@ System.out.println(String.format("%d", ArowCount));
                 while (true){
                         month = readIntegerHelper("Month");
                         if (month < 1 || month > 12){
-                                System.out.println("Invalid month. Please enter a valid month");
+								System.out.println("*****************************************");
+								System.out.println("Invalid month. Please enter a valid month");
+								System.out.println("*****************************************\n");
                         }
                         else{
                                 break;
@@ -1148,7 +1166,9 @@ System.out.println(String.format("%d", ArowCount));
                 while (true){
                         day = readIntegerHelper("Day");
                         if (day < 1 || day > 31){
-                                System.out.println("Invalid day. Please enter a valid day");
+								System.out.println("*************************************");
+								System.out.println("Invalid day. Please enter a valid day");
+								System.out.println("*************************************\n");
                         }
                         else{
                                 break;
@@ -1158,7 +1178,9 @@ System.out.println(String.format("%d", ArowCount));
                 while (true){
                         hour = readIntegerHelper("hour");
                         if (hour < 0 || hour > 23){
-                                System.out.println("Invalid hour. Please enter a valid hour");
+								System.out.println("***************************************");
+								System.out.println("Invalid hour. Please enter a valid hour");
+								System.out.println("***************************************\n");
                         }
                         else{
                                 break;
@@ -1168,13 +1190,14 @@ System.out.println(String.format("%d", ArowCount));
                 while (true){
                         minutes = readIntegerHelper("minutes");
                         if (minutes < 0 || minutes > 59){
-                                System.out.println("Invalid minutes. Please enter a valid minutes");
-                        }
+								System.out.println("*********************************************");
+								System.out.println("Invalid minutes. Please enter a valid minutes");
+								System.out.println("*********************************************\n");
+						}
                         else{
                                 break;
                         }
                 }
-
                 return Integer.toString(year) + "-" + Integer.toString(month) + "-" + Integer.toString(day) + " " + Integer.toString(hour) + ":" + Integer.toString(minutes);
         }
 
@@ -1195,7 +1218,7 @@ System.out.println(String.format("%d", ArowCount));
 				break;
 			}
 			else {
-				System.out.print("Invalid choice. ");
+				System.out.print("Invalid choice.");
 			}
 		}
 		return procceed;
