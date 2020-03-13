@@ -213,10 +213,34 @@ source ./run.sh flightDB 5432 user
 
     - If all the inputs are valid, we use an INSERT statement to create a new record containning the inputted information in the Technician table
 
+
  > • Book Flight: Given a customer and flight that he/she wants to book, determine the status
 of the reservation (Waitlisted/Confirmed/Reserved) and add the reservation to the database
 with appropriate status.
 
+   To implement this requirement, we ask the user to input a customer id and a flight number. We perform the following validation:
+
+   - To validate the flight number, we check if there is any record in the Flight table with the inputted flight number. If there is no such record then we ask for a new flight number otherwise we continue.
+
+   - To validate the customer id, we check if there is any record in the Customer table with the inputted customer id. If there is no such record then we ask for a new customer id otherwise we continue.
+
+   After the inputs are validated, we check if there is any reservation record that have the inputted flight number and customer id in their fid and cid fields respectively. If there is a record then we check the status of it and do the following logic:
+   
+   Note: We check if a flight is full by comparing the number of tickets sold and the number of seats of the plane assigned to the flight. If number of seats is less than the number of tickets sold then flight is considered full otherwise flight is not considered full
+
+   - If status is waitlisted we let the user know the customer is currently waitlisted. If the flight is still full, we let the user know that there is no further action available. If flight has open seats, we ask the user whether or not to change the reservation status to confirmed or reserved and update the reservation record accordingly.
+
+   - If status is reserved we let the user know the customer is currently reserved. We ask the user whether or not to change the reservation status to confirmed and update the reservation record accordingly.
+
+   - If status is confirmed we let the user know the customer is currently confirmed and that there is no further action necessary. Note, we do not let the user change a reservation status of confirmed.
+
+
+   If there is no reservation record that have the inputted flight number and customer id in their fid and cid fields respectively, we do the following logic:
+
+   - If the flight is still full, we ask the user whether or not to add the customer to the waitlist and create a new reservation record with status of waitlisted accordingly. 
+   
+   - If flight has open seats, we ask the user whether to confirm or reserve the flight for the customer and create a new reservation record with status of confirmed or reserved accordingly. 
+   
 
  > • List number of available seats for a given flight: Given a flight number and a departure date,
 find the number of available seats in the flight.
@@ -247,7 +271,7 @@ return the number of passengers with the given status.
 
       To implement this requirement, we ask the user to provide a flight number and passenger status (W, C, R). We perform the following validation:
 
-      - To validate the flight number, we check if there is any record in the Flight table with the inputted flight number. If there is not such record then we ask for a new flight number otherwise we continue.
+      - To validate the flight number, we check if there is any record in the Flight table with the inputted flight number. If there is no such record then we ask for a new flight number otherwise we continue.
 
       - We ask the user to input W to select waitlisted passengers, C  to select confirmed passengers, and R for reserved passengers
      

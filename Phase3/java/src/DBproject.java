@@ -667,6 +667,7 @@ public class DBproject{
 		//String flightNum = "";
 		String query = "";
 		String sucessMessage = "";
+		boolean confirmed = false;
 
 		// Validate customer Id
 		while (true){
@@ -709,6 +710,23 @@ public class DBproject{
 			// If resevation status is W:
 			if (ReservationRecord.get(0).get(3).equals("W")){
 				System.out.println("Customer is currently WAITLISTED for Flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
+				// If flight is full
+				if (isFlightFull(flightNumber, esql)){
+					System.out.println("Flight is still full. No further action available");
+				}// If flight is not full
+				else {
+					confirmed = askForConfirmationOrReservation();
+					if (confirmed){
+						query = String.format("UPDATE Reservation SET status = 'C' where rnum = %s", reservationNum); 
+						sucessMessage = String.format("Sucessfully changed customer's status to CONFIRMED for flight (%d)", flightNumber);
+						executeUpdateInsertQuery(query, sucessMessage, esql);					
+					}
+					else {
+						query = String.format("UPDATE Reservation SET status = 'R' where rnum = %s", reservationNum); 
+						sucessMessage = String.format("Sucessfully changed customer's status to RESERVED for flight (%d)", flightNumber);
+						executeUpdateInsertQuery(query, sucessMessage, esql);	
+					}
+				}
 			}// If resereation status is R
 			else if (ReservationRecord.get(0).get(3).equals("R")){
 				System.out.println("Customer is RESERVED for flight:\n" + DisplayFlightInfo(FlightRecord.get(0)));
@@ -748,26 +766,7 @@ public class DBproject{
 				}
 			}
 			else {
-				// TO DO CREATE RESEVATION NUMBERS
-				System.out.println("Flight has open seats. Wold you like to CONFIRM or RESERVE the flight for the customer?");
-				// Check if user wants to confirm or reseve a flight
-				String answer = "";
-				boolean confirmed = false;
-
-				while(true){
-					answer = readStringHelper("Pleaser enter C/c to CONFIRM the flight or R/r to RESERVE the flight");
-					if (answer.equals("C") || answer.equals("c")){
-						confirmed = true;
-						break;
-					} 
-					else if (answer.equals("R") || answer.equals("r")){
-						confirmed = false;
-						break;
-					}
-					else {
-						System.out.print("Invalid choice. ");
-					}
-				}
+				confirmed = askForConfirmationOrReservation();
 				if (confirmed){
 					query = String.format("INSERT INTO Reservation VALUES (%d, %d, %d, 'C')", generateValidId() ,customerId, flightNumber); 
 					sucessMessage = String.format("Sucessfully CONFIRMED customer for flight (%d)", flightNumber);
@@ -871,7 +870,6 @@ System.out.println(String.format("%d", ArowCount));
 		}
 	}
 
-	// TO DO: IMPROVE READABILITY?
 //=====================================================================================================================================================================
 	public static void ListsTotalNumberOfRepairsPerPlane(DBproject esql) {//7
 		// Count number of repairs per planes and list them in descending order. Excute query and print
@@ -1211,5 +1209,28 @@ System.out.println(String.format("%d", ArowCount));
         Random rand = new Random(); 
         // Generate random integers in range 10000 to 100000
         return rand.nextInt(90000) + 10000;
+	}
+
+	public static boolean askForConfirmationOrReservation(){
+		System.out.println("Flight has open seats. Wold you like to CONFIRM or RESERVE the flight for the customer?");
+		// Check if user wants to confirm or reseve a flight
+		String answer = "";
+		boolean confirmed = false;
+
+		while(true){
+			answer = readStringHelper("Pleaser enter C/c to CONFIRM the flight or R/r to RESERVE the flight");
+			if (answer.equals("C") || answer.equals("c")){
+				confirmed = true;
+				break;
+			} 
+			else if (answer.equals("R") || answer.equals("r")){
+				confirmed = false;
+				break;
+			}
+			else {
+				System.out.print("Invalid choice. ");
+			}
+		}
+		return confirmed;
 	}
 }
